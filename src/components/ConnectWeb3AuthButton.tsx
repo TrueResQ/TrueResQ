@@ -7,7 +7,7 @@ const ConnectWeb3AuthButton = () => {
   if (provider) {
     return (
       <div
-        className="flex flex-row rounded-full px-6 py-3 text-white justify-center align-center"
+        className="flex flex-row rounded-full px-6 py-3 text-white justify-center align-center cursor-pointer"
         style={{ backgroundColor: "#599cb3" }}
         onClick={logout}
       >
@@ -18,7 +18,7 @@ const ConnectWeb3AuthButton = () => {
   }
   return (
     <div
-      className="flex flex-row rounded-full px-6 py-3 text-white justify-center align-center"
+      className="flex flex-row rounded-full px-6 py-3 text-white justify-center align-center cursor-pointer"
       style={{ backgroundColor: "#599cb3" }}
       onClick={login}
     >

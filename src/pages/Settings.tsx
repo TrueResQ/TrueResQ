@@ -133,27 +133,27 @@ function Settings() {
       <div className="flex flex-1 overflow-hidden">
         <Sidebar />
 
-        <div className=" w-full h-full flex flex-1 flex-col bg-gray-50 items-center justify-flex-start overflow-scroll">
+        <div className=" w-full h-full flex flex-1 flex-col bg-gray-50 items-center justify-flex-start overflow-hidden">
           <h1 className="w-11/12 px-4 pt-16 pb-8 sm:px-6 lg:px-8 text-2xl font-bold text-center sm:text-3xl">Settings</h1>
           <Steps stepData={StepData} />
 
           {step === "recovery" ? (
             <>
               <div className="w-11/12 px-4 sm:px-6 lg:px-8 z-0 flex">
-                <div className="p-7 flex flex-3 flex-col overflow-scroll bg-white">
+                <div className="p-7 flex flex-3 flex-col overflow-hidden bg-white">
                   {Buttons.map((button) => {
                     if (loginMethods.includes(button.loginProvider))
                       return generateButton(button.loginProvider, button.adapter, button.label, "#e2e8f0", true);
                     return generateButton(button.loginProvider, button.adapter, button.label, button.backgroundColor, false);
                   })}
                 </div>
-                <div className="p-8 flex flex-1 flex-col bg-white overflow-scroll bg-white">
-                  <table className="min-w-full divide-y divide-gray-200 text-sm">
-                    <thead className="bg-primary">
+                <div className="p-8 flex flex-1 flex-col bg-white overflow-hidden bg-white">
+                  <table className="min-w-full divide-y divide-gray-200 text-sm rounded">
+                    <thead className="bg-primary rounded">
                       <tr>
-                        <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-white">Account Type</th>
+                        <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-white rounded-l">Account Type</th>
                         <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-white">Account</th>
-                        <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-white">Address</th>
+                        <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-white rounded-r">Address</th>
                       </tr>
                     </thead>
 
@@ -161,9 +161,9 @@ function Settings() {
                       {recoveryAccounts.map((account) => {
                         return (
                           <tr>
-                            <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">{account.typeOfLogin}</td>
+                            <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900 rounded-l">{account.typeOfLogin}</td>
                             <td className="whitespace-nowrap px-4 py-2 text-gray-700">{account.verifierId}</td>
-                            <td className="whitespace-nowrap px-4 py-2 text-gray-700">{account.address}</td>
+                            <td className="whitespace-nowrap px-4 py-2 text-gray-700 rounded-r">{account.address}</td>
                           </tr>
                         );
                       })}
