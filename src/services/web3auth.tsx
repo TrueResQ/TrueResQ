@@ -66,7 +66,25 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
         setWalletProvider(web3auth.provider!);
         const userDetails = await web3auth.getUserInfo();
         setUser(userDetails);
-        // getStarkKey();
+        const myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+        const raw = JSON.stringify({
+          public_address: address,
+          verifier_id: user.verifierId,
+          verifier: user.verifier,
+        });
+        const requestOptions = {
+          method: "POST",
+          headers: myHeaders,
+          body: raw,
+          mode: "cors" as RequestMode,
+          redirect: "follow" as RequestRedirect,
+        };
+
+        fetch("http://localhost:2020/user", requestOptions)
+          .then((response) => response.text())
+          .then((result) => console.log(result))
+          .catch((error) => console.log("error", error));
       });
 
       web3auth.on(ADAPTER_EVENTS.CONNECTING, () => {
