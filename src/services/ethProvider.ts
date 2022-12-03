@@ -1,4 +1,5 @@
 import { ChainId } from "@biconomy/core-types";
+// import { Biconomy } from "@biconomy/mexa";
 import SmartAccount from "@biconomy/smart-account";
 import type { SafeEventEmitterProvider } from "@web3auth/base";
 import { ethers } from "ethers";
@@ -115,17 +116,21 @@ const ethProvider = (provider: SafeEventEmitterProvider | null, uiConsole: (...a
 
   const writeContract = async () => {
     const web3 = new Web3(provider as any);
-    const contract = new web3.eth.Contract(JSON.parse(contractABI), contractAddress);
-    const address = (await web3.eth.getAccounts())[0];
+    //
+    try {
+      const address = await web3.eth.getAccounts();
+      console.log(address);
+      const contract = new web3.eth.Contract(JSON.parse(contractABI), contractAddress);
 
-    // Deploy contract with "Hello World!" in the constructor and wait to finish
-    const receipt = await contract.methods.update("NEW_MESSAGE").send({
-      from: address,
-      maxPriorityFeePerGas: "5000000000", // Max priority fee per gas
-      maxFeePerGas: "6000000000000", // Max fee per gas
-    });
+      // // Deploy contract with "Hello World!" in the constructor and wait to finish
+      const receipt = await contract.methods.update("TrueResQ is Gasless now").send({
+        from: address[0],
+      });
 
-    return receipt;
+      return receipt;
+    } catch (error) {
+      console.error(error.message);
+    }
   };
 
   return {

@@ -1,3 +1,4 @@
+import { Biconomy } from "@biconomy/mexa";
 import { ADAPTER_EVENTS, CHAIN_NAMESPACES, SafeEventEmitterProvider } from "@web3auth/base";
 import { Web3AuthCore } from "@web3auth/core";
 import { MetamaskAdapter } from "@web3auth/metamask-adapter";
@@ -63,6 +64,7 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
   const [balance, setBalance] = useState<IWalletProvider | null>(null);
   const [recoveryAccounts, setRecoveryAccounts] = useState<any>([]);
   const [user, setUser] = useState<any | null>(null);
+  const [web3biconomy, setWeb3biconomy] = useState<Web3 | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const clientId = "BJRZ6qdDTbj6Vd5YXvV994TYCqY42-PxldCetmvGTUdoq6pkCqdpuC1DIehz76zuYdaq1RJkXGHuDraHRhCQHvA";
 
@@ -151,6 +153,17 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
         web3AuthInstance.configureAdapter(openloginAdapter);
         setWeb3Auth(web3AuthInstance);
         await web3AuthInstance.initModal();
+        if (web3AuthInstance.provider) {
+          const biconomy = new Biconomy(web3AuthInstance.provider, {
+            apiKey: "NuSSxYDAx.3de630c2-75c8-4d87-a684-8a66bd1b7117",
+            debug: true,
+            contractAddresses: ["0x3888b4606f9f12ee2e92f04bb0398172bb91765d"],
+          });
+          console.log("biconomy obj", biconomy);
+          const web3biconomy = new Web3(biconomy as any);
+          console.log("biconomy web3 obj", web3biconomy);
+          setWeb3biconomy(web3biconomy);
+        }
       } catch (error) {
         console.log(error);
       } finally {
@@ -214,7 +227,8 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
       console.log("web3auth not initialized yet");
       return;
     }
-    await provider.readContract();
+    const result = await provider.readContract();
+    console.log(result);
   };
 
   const deployContract = async () => {
@@ -230,7 +244,9 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
       console.log("web3auth not initialized yet");
       return;
     }
-    await provider.writeContract();
+    console.log(web3biconomy);
+    const result = await provider.writeContract();
+    console.log(result);
   };
 
   const getBalance = async () => {
