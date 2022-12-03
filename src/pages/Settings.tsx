@@ -47,7 +47,7 @@ function Settings() {
     </svg>
   );
 
-  if (!provider) navigate("/");
+  // if (!provider) navigate("/");
 
   const [step, setStep] = useState("recovery");
   const formDetailsRecovery = [];

@@ -124,3 +124,13 @@ body {
   font-family: "DM Sans", sans-serif !important;
   font-weight: 500;
 }
+
+.recoveryGuardians {
+  display: flex;
+  flex-direction: row;
+  background-color: lightgrey;
+  padding: 200;
+  padding: 20px;
+  margin: 10px;
+}
+

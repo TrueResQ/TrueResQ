@@ -6,6 +6,10 @@ const Sidebar = () => {
   const { provider, user } = useWeb3Auth();
 
   const navigate = useNavigate();
+  function goToRecoveryRequests() {
+    navigate("/recoveryRequests");
+  }
+
   function goToHome() {
     navigate("/");
   }
@@ -62,6 +66,7 @@ const Sidebar = () => {
         <nav className="flex flex-col mt-6">
           {location.pathname === "/" ? activePage("Account Details") : linktoGo("Account Details", goToHome)}
           {location.pathname === "/settings" ? activePage("Settings") : linktoGo("Settings", goToSettings)}
+          {location.pathname === "/recoveryRequests" ? activePage("Recovery Requests") : linktoGo("Recovery Requests", goToRecoveryRequests)}
         </nav>
       </div>
       {userProfile()}
