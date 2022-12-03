@@ -1,6 +1,7 @@
-import { ADAPTER_EVENTS, CHAIN_NAMESPACES, SafeEventEmitterProvider } from "@web3auth/base";
+import { ADAPTER_EVENTS, CHAIN_NAMESPACES, SafeEventEmitterProvider, WALLET_ADAPTERS } from "@web3auth/base";
 import { Web3Auth } from "@web3auth/modal";
 import { createContext, ReactNode, useCallback, useContext, useEffect, useState } from "react";
+import Web3 from "web3";
 
 import { getWalletProvider, IWalletProvider } from "./walletProvider";
 
@@ -11,6 +12,7 @@ export interface IWeb3AuthContext {
   user: any;
   address: any;
   balance: any;
+  recoveryAccounts: any;
   login: () => Promise<void>;
   logout: () => Promise<void>;
   getUserInfo: () => Promise<any>;
@@ -23,6 +25,7 @@ export const Web3AuthContext = createContext<IWeb3AuthContext>({
   user: null,
   address: null,
   balance: null,
+  recoveryAccounts: null,
   login: async () => {},
   logout: async () => {},
   getUserInfo: async () => {},
@@ -62,7 +65,7 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
     const subscribeAuthEvents = (web3auth: Web3Auth) => {
       // Can subscribe to all ADAPTER_EVENTS and LOGIN_MODAL_EVENTS
       web3auth.on(ADAPTER_EVENTS.CONNECTED, async (data: any) => {
-        uiConsole("Yeah!, you are successfully logged in", data);
+        console.log("Yeah!, you are successfully logged in", data);
         setWalletProvider(web3auth.provider!);
         const userDetails = await web3auth.getUserInfo();
         setUser(userDetails);
@@ -70,16 +73,16 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
       });
 
       web3auth.on(ADAPTER_EVENTS.CONNECTING, () => {
-        uiConsole("connecting");
+        console.log("connecting");
       });
 
       web3auth.on(ADAPTER_EVENTS.DISCONNECTED, () => {
-        uiConsole("disconnected");
+        console.log("disconnected");
         setUser(null);
       });
 
       web3auth.on(ADAPTER_EVENTS.ERRORED, (error) => {
-        uiConsole("some error or user has cancelled login request", error);
+        console.log("some error or user has cancelled login request", error);
       });
     };
 
@@ -106,7 +109,7 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
         setWeb3Auth(web3AuthInstance);
         await web3AuthInstance.initModal();
       } catch (error) {
-        uiConsole(error);
+        console.log(error);
       } finally {
         setIsLoading(false);
       }
@@ -116,8 +119,8 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
 
   const login = async () => {
     if (!web3Auth) {
-      uiConsole("web3auth not initialized yet");
-      uiConsole("web3auth not initialized yet");
+      console.log("web3auth not initialized yet");
+      console.log("web3auth not initialized yet");
       return;
     }
     console.log("web3auth connecting");
@@ -127,10 +130,10 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
   };
 
   const logout = async () => {
-    uiConsole("Logging out");
+    console.log("Logging out");
     if (!web3Auth) {
-      uiConsole("web3auth not initialized yet");
-      uiConsole("web3auth not initialized yet");
+      console.log("web3auth not initialized yet");
+      console.log("web3auth not initialized yet");
       return;
     }
     await web3Auth.logout();
@@ -139,16 +142,16 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
 
   const getUserInfo = async () => {
     if (!web3Auth) {
-      uiConsole("web3auth not initialized yet");
+      console.log("web3auth not initialized yet");
       return;
     }
     const user = await web3Auth.getUserInfo();
-    uiConsole(user);
+    console.log(user);
   };
 
   const getAddress = async () => {
     if (!provider) {
-      uiConsole("provider not initialized yet");
+      console.log("provider not initialized yet");
       return;
     }
     await provider.getAddress();
@@ -156,7 +159,7 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
 
   const readContract = async () => {
     if (!web3Auth) {
-      uiConsole("web3auth not initialized yet");
+      console.log("web3auth not initialized yet");
       return;
     }
     await provider.readContract();
@@ -164,7 +167,7 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
 
   const deployContract = async () => {
     if (!web3Auth) {
-      uiConsole("web3auth not initialized yet");
+      console.log("web3auth not initialized yet");
       return;
     }
     await provider.getBalance();
@@ -172,7 +175,7 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
 
   const writeContract = async () => {
     if (!web3Auth) {
-      uiConsole("web3auth not initialized yet");
+      console.log("web3auth not initialized yet");
       return;
     }
     await provider.writeContract();
@@ -180,10 +183,23 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
 
   const getBalance = async () => {
     if (!web3Auth) {
-      uiConsole("web3auth not initialized yet");
+      console.log("web3auth not initialized yet");
       return;
     }
     await provider.getBalance();
+  };
+
+  const addRecoveryAccount = async (loginProvider) => {
+    if (!web3Auth) {
+      console.log("web3auth not initialized yet");
+      return;
+    }
+    const newProvider = await web3Auth.connectTo(WALLET_ADAPTERS.OPENLOGIN, {
+      loginProvider,
+    });
+    const web3 = new Web3(newProvider as any);
+    const address = (await web3.eth.getAccounts())[0];
+    return address;
   };
 
   const contextProvider = {
@@ -201,6 +217,7 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
     deployContract,
     readContract,
     writeContract,
+    addRecoveryAccount,
   };
   return <Web3AuthContext.Provider value={contextProvider}>{children}</Web3AuthContext.Provider>;
 };

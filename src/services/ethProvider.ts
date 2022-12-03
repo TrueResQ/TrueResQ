@@ -11,7 +11,7 @@ const ethProvider = (provider: SafeEventEmitterProvider | null, uiConsole: (...a
       const address = (await web3.eth.getAccounts())[0];
       return address;
     } catch (error) {
-      uiConsole(error);
+      console.log(error);
       return error;
     }
   };
@@ -25,7 +25,7 @@ const ethProvider = (provider: SafeEventEmitterProvider | null, uiConsole: (...a
       );
       return balance;
     } catch (error) {
-      uiConsole(error);
+      console.log(error);
       return error;
     }
   };
