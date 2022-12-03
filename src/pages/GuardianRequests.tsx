@@ -1,16 +1,16 @@
 // @ts-ignore
 import starkwareCrypto from "@starkware-industries/starkware-crypto-utils";
 import { useEffect, useState } from "react";
-import { FaBackward } from "react-icons/fa";
+import { FaArrowLeft } from "react-icons/fa";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 
 import Form from "../components/Form";
+import Table from "../components/GuardianRequestsTable";
 import Header from "../components/Header";
-import Table from "../components/RecoveryRequestsTable";
 import Sidebar from "../components/Sidebar";
 import Tabs from "../components/Tabs";
 import { useWeb3Auth } from "../services/web3auth";
-const recoveryRequests = [
+const guardianRequests = [
   {
     email: "himanshu@tor.us",
     address: "0x8b1f49491477e0fb46a29fef53f1ea320d13c349",
@@ -18,7 +18,7 @@ const recoveryRequests = [
     requestId: "1234567890",
   },
 ];
-function RecoveryRequests() {
+function GuardianRequests() {
   const { provider, address, balance, recoveryAccounts, addRecoveryAccount } = useWeb3Auth();
   const [requestId, setRequestId] = useState(null);
   const navigate = useNavigate();
@@ -106,7 +106,7 @@ function RecoveryRequests() {
         <Sidebar />
 
         <div className=" w-full h-full flex flex-1 flex-col bg-gray-50 items-center justify-flex-start overflow-scroll">
-          <h1 className="w-11/12 px-4 pt-16 pb-8 sm:px-6 lg:px-8 text-2xl font-bold text-center sm:text-3xl">Recovery Requests</h1>
+          <h1 className="w-11/12 px-4 pt-16 pb-8 sm:px-6 lg:px-8 text-2xl font-bold text-center sm:text-3xl">Guardian Requests</h1>
           {requestId ? (
             <div className="w-11/12 px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-flex-center">
               <div
@@ -115,7 +115,7 @@ function RecoveryRequests() {
                   navigate("");
                 }}
               >
-                <FaBackward />
+                <FaArrowLeft />
               </div>
               <div>You are invited to be the guardian of himanshu</div>
               <div className="flex flex-row pd-100">
@@ -140,27 +140,12 @@ function RecoveryRequests() {
               </div>
             </div>
           ) : (
-            <Table requests={recoveryRequests} />
+            <Table requests={guardianRequests} />
           )}
-
-          {/* <Tabs tabData={TabData} />
-
-          {tab === "recovery" ? (
-            <Form formDetails={formDetailsRecovery}>
-              <div className=" w-full flex flex-1 justify-between ">
-                {Buttons.map((button) => {
-                  if (loginMethods.includes(button.loginProvider)) return null;
-                  return generateButton(button.loginProvider, button.adapter, button.label, button.backgroundColor);
-                })}
-              </div>
-            </Form>
-          ) : (
-            <Form formDetails={formDetailsGaurdians}></Form>
-          )} */}
         </div>
       </div>
     </main>
   );
 }
 
-export default RecoveryRequests;
+export default GuardianRequests;

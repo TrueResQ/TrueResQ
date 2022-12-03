@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/no-unresolved
 import { Biconomy } from "@biconomy/mexa";
 import { ADAPTER_EVENTS, CHAIN_NAMESPACES, SafeEventEmitterProvider } from "@web3auth/base";
 import { Web3AuthCore } from "@web3auth/core";
@@ -26,6 +27,7 @@ export interface IWeb3AuthContext {
   readContract: () => Promise<any>;
   writeContract: () => Promise<any>;
   addRecoveryAccount: (loginProvider: string, adapter: string) => Promise<any>;
+  loginWithRecoveryAccount: (loginProvider: string, adapter: string) => Promise<any>;
   sendTransaction: () => Promise<any>;
 }
 
@@ -46,6 +48,7 @@ export const Web3AuthContext = createContext<IWeb3AuthContext>({
   readContract: async () => {},
   writeContract: async () => {},
   addRecoveryAccount: async () => {},
+  loginWithRecoveryAccount: async () => {},
   sendTransaction: async () => {},
 });
 
@@ -308,6 +311,51 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
     return address;
   };
 
+  const loginWithRecoveryAccount = async (loginProvider, adapter) => {
+    const web3AuthInstance = new Web3AuthCore({
+      chainConfig,
+      clientId,
+      storageKey: "session",
+    });
+    const r = (Math.random() + 1).toString(36).substring(7);
+    const openloginAdapter = new OpenloginAdapter({
+      adapterSettings: {
+        network: "cyan",
+        _sessionNamespace: r,
+        uxMode: "popup",
+      },
+    });
+    web3AuthInstance.configureAdapter(openloginAdapter);
+    const metamaskAdapter = new MetamaskAdapter({ clientId });
+    web3AuthInstance.configureAdapter(metamaskAdapter);
+    await web3AuthInstance.init();
+    let newProvider = null;
+    if (adapter === "openlogin") {
+      newProvider = await web3AuthInstance.connectTo(adapter, {
+        loginProvider,
+      });
+    } else {
+      newProvider = await web3AuthInstance.connectTo(adapter);
+    }
+    const web3 = new Web3(newProvider as any);
+    const address = (await web3.eth.getAccounts())[0];
+    const recoveryDetails = await web3AuthInstance.getUserInfo();
+    let typeOfLogin = null;
+    if (recoveryDetails.typeOfLogin) {
+      typeOfLogin = recoveryDetails.typeOfLogin;
+    } else {
+      typeOfLogin = "metamask";
+    }
+    let verifierId = null;
+    if (recoveryDetails.verifierId) {
+      verifierId = recoveryDetails.verifierId;
+    } else {
+      verifierId = "metamask";
+    }
+    window.location.href = "/recovery";
+    return address;
+  };
+
   const contextProvider = {
     web3Auth,
     provider,
@@ -326,6 +374,7 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
     readContract,
     writeContract,
     addRecoveryAccount,
+    loginWithRecoveryAccount,
   };
   return <Web3AuthContext.Provider value={contextProvider}>{children}</Web3AuthContext.Provider>;
 };

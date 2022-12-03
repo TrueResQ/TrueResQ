@@ -1,3 +1,5 @@
+import { useNavigate } from "react-router-dom";
+
 import ConnectWeb3AuthButton from "../components/ConnectWeb3AuthButton";
 import Form from "../components/Form";
 import Header from "../components/Header";
@@ -6,6 +8,8 @@ import { useWeb3Auth } from "../services/web3auth";
 
 function HomePage() {
   const { provider, address, balance, sendTransaction, readContract, writeContract } = useWeb3Auth();
+  const navigate = useNavigate();
+
   const formDetails = [
     {
       label: "Address",
@@ -55,6 +59,15 @@ function HomePage() {
           <p className="max-w-md mx-auto mt-4 text-center text-gray-500">Please connect to Web3Auth to get started.</p>
           <div className="flex-col flex-row mt-10 items-center">
             <ConnectWeb3AuthButton />
+          </div>
+          <div
+            className="flex-col flex-row mt-10 items-center"
+            style={{ cursor: "pointer" }}
+            onClick={() => {
+              navigate("/recoveryLogin");
+            }}
+          >
+            Forgot account?
           </div>
         </div>
       )}

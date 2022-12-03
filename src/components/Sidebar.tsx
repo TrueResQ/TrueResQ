@@ -6,8 +6,8 @@ const Sidebar = () => {
   const { provider, user } = useWeb3Auth();
 
   const navigate = useNavigate();
-  function goToRecoveryRequests() {
-    navigate("/recoveryRequests");
+  function goToGuardianRequests() {
+    navigate("/guardianRequests");
   }
 
   function goToHome() {
@@ -15,6 +15,9 @@ const Sidebar = () => {
   }
   function goToSettings() {
     navigate("/settings");
+  }
+  function goToRecovery() {
+    navigate("/recovery");
   }
   const location = useLocation();
   function linktoGo(label: string, path: any) {
@@ -66,7 +69,8 @@ const Sidebar = () => {
         <nav className="flex flex-col mt-6">
           {location.pathname === "/" ? activePage("Default Parameters") : linktoGo("Default Parameters", goToHome)}
           {location.pathname === "/settings" ? activePage("Settings") : linktoGo("Settings", goToSettings)}
-          {location.pathname === "/recoveryRequests" ? activePage("Recovery Requests") : linktoGo("Recovery Requests", goToRecoveryRequests)}
+          {location.pathname === "/guardianRequests" ? activePage("Guardian Requests") : linktoGo("Recovery Requests", goToGuardianRequests)}
+          {location.pathname === "/recovery" ? activePage("Recovery") : linktoGo("Recovery", goToRecovery)}
         </nav>
       </div>
       {userProfile()}

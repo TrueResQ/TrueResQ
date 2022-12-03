@@ -1,4 +1,4 @@
-type RecoveryProps = {
+type GuardianProps = {
   requests: {
     email: string;
     address: string;
@@ -7,7 +7,7 @@ type RecoveryProps = {
   }[];
 };
 
-const Table = (props: RecoveryProps) => {
+const Table = (props: GuardianProps) => {
   return (
     <div className="overflow-hidden overflow-x-auto rounded-lg border border-gray-200">
       <table className="min-w-full divide-y divide-gray-200 text-sm">

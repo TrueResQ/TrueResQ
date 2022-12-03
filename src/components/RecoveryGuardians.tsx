@@ -1,6 +1,6 @@
 function RecoveryGuardians() {
   return (
-    <div className="w-full h-full flex flex-1 flex-col bg-gray-50 items-center justify-flex-start overflow-scroll">
+    <div className="w-full h-full flex flex-1 flex-col bg-gray-50 items-center justify-flex-start">
       <div className="recoveryGuardians">
         <div className="flex-col" style={{ marginRight: "20px" }}>
           Guardian 1
