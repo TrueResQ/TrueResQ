@@ -30,6 +30,29 @@ const ethProvider = (provider: SafeEventEmitterProvider | null, uiConsole: (...a
     }
   };
 
+  const sendTransaction = async (): Promise<any> => {
+    try {
+      const web3 = new Web3(provider as any);
+      const fromAddress = (await web3.eth.getAccounts())[0];
+
+      const destination = "0x7aFac68875d2841dc16F1730Fba43974060b907A";
+      // const amount = web3.utils.toWei(); // Convert 1 ether to wei
+
+      // Submit transaction to the blockchain and wait for it to be mined
+      const receipt = await web3.eth.sendTransaction({
+        from: fromAddress,
+        to: destination,
+        value: web3.utils.toWei("0.01"),
+        maxPriorityFeePerGas: "5000000000", // Max priority fee per gas
+        maxFeePerGas: "6000000000000", // Max fee per gas
+      });
+      return receipt;
+    } catch (error) {
+      uiConsole(error);
+      return error;
+    }
+  };
+
   const deployContract = async () => {
     const web3 = new Web3(provider as any);
     const contract = new web3.eth.Contract(JSON.parse(contractABI));
@@ -75,6 +98,7 @@ const ethProvider = (provider: SafeEventEmitterProvider | null, uiConsole: (...a
   return {
     getAddress,
     getBalance,
+    sendTransaction,
     deployContract,
     readContract,
     writeContract,

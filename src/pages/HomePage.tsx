@@ -5,7 +5,7 @@ import Sidebar from "../components/Sidebar";
 import { useWeb3Auth } from "../services/web3auth";
 
 function HomePage() {
-  const { provider, address, balance } = useWeb3Auth();
+  const { provider, address, balance, sendTransaction } = useWeb3Auth();
   const formDetails = [
     {
       label: "Address",
