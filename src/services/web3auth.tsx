@@ -9,7 +9,6 @@ export interface IWeb3AuthContext {
   provider: IWalletProvider | null;
   isLoading: boolean;
   user: any;
-  starkKey: any;
   address: any;
   balance: any;
   login: () => Promise<void>;
@@ -22,7 +21,6 @@ export const Web3AuthContext = createContext<IWeb3AuthContext>({
   provider: null,
   isLoading: false,
   user: null,
-  starkKey: null,
   address: null,
   balance: null,
   login: async () => {},
@@ -41,7 +39,6 @@ interface IWeb3AuthProps {
 export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
   const [web3Auth, setWeb3Auth] = useState<Web3Auth | null>(null);
   const [provider, setProvider] = useState<IWalletProvider | null>(null);
-  const [starkKey, setStarkKey] = useState<IWalletProvider | null>(null);
   const [address, setAddress] = useState<IWalletProvider | null>(null);
   const [balance, setBalance] = useState<IWalletProvider | null>(null);
   const [user, setUser] = useState<any | null>(null);
@@ -79,7 +76,6 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
       web3auth.on(ADAPTER_EVENTS.DISCONNECTED, () => {
         uiConsole("disconnected");
         setUser(null);
-        setStarkKey(null);
       });
 
       web3auth.on(ADAPTER_EVENTS.ERRORED, (error) => {
@@ -139,7 +135,6 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
     }
     await web3Auth.logout();
     setProvider(null);
-    setStarkKey(null);
   };
 
   const getUserInfo = async () => {
@@ -159,6 +154,30 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
     await provider.getAddress();
   };
 
+  const readContract = async () => {
+    if (!web3Auth) {
+      uiConsole("web3auth not initialized yet");
+      return;
+    }
+    await provider.readContract();
+  };
+
+  const deployContract = async () => {
+    if (!web3Auth) {
+      uiConsole("web3auth not initialized yet");
+      return;
+    }
+    await provider.getBalance();
+  };
+
+  const writeContract = async () => {
+    if (!web3Auth) {
+      uiConsole("web3auth not initialized yet");
+      return;
+    }
+    await provider.writeContract();
+  };
+
   const getBalance = async () => {
     if (!web3Auth) {
       uiConsole("web3auth not initialized yet");
@@ -172,7 +191,6 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
     provider,
     user,
     isLoading,
-    starkKey,
     address,
     balance,
     login,
@@ -180,6 +198,9 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
     getUserInfo,
     getAddress,
     getBalance,
+    deployContract,
+    readContract,
+    writeContract,
   };
   return <Web3AuthContext.Provider value={contextProvider}>{children}</Web3AuthContext.Provider>;
 };
