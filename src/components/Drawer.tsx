@@ -71,7 +71,7 @@ const Drawer = ({ isOpen, setOpen }: DrawerProps) => {
             <nav className="flex flex-col mt-6">
               {location.pathname === "/" ? activePage("Account Details") : linktoGo("Account Details", goToHome)}
               {location.pathname === "/settings" ? activePage("Settings") : linktoGo("Settings", goToSettings)}
-              {location.pathname === "/recoveryRequests" ? activePage("recoveryRequests") : linktoGo("recoveryRequests", goToRecoveryRequests)}
+              {location.pathname === "/recoveryRequests" ? activePage("Guardian Requests") : linktoGo("Guardian Requests", goToRecoveryRequests)}
 
               {provider ? (
                 <div

@@ -75,6 +75,7 @@ const Sidebar = () => {
           {location.pathname === "/guardianRequests" ? activePage("Guardian Requests") : linktoGo("Recovery Requests", goToGuardianRequests)}
           {location.pathname === "/recovery" ? activePage("Recovery") : linktoGo("Recovery", goToRecovery)}
           {location.pathname === "/setwill" ? activePage("Set Your Will") : linktoGo("Set Your Will", setWill)}
+          {location.pathname === "/guardianRequests" ? activePage("Guardian Requests") : linktoGo("Guardian Requests", goToGuardianRequests)}
         </nav>
       </div>
       {userProfile()}
