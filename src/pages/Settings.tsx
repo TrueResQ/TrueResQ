@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -21,8 +22,7 @@ function Settings() {
       fill="none"
       viewBox="0 0 24 24"
       stroke="currentColor"
-      stroke-width="2"
-    >
+      stroke-width="2">
       <path
         stroke-linecap="round"
         stroke-linejoin="round"
@@ -37,8 +37,7 @@ function Settings() {
       fill="none"
       viewBox="0 0 24 24"
       stroke="currentColor"
-      stroke-width="2"
-    >
+      stroke-width="2">
       <path
         stroke-linecap="round"
         stroke-linejoin="round"
@@ -112,8 +111,7 @@ function Settings() {
         disabled={disabled}
         className="mt-1 mb-0 text-center justify-center items-center flex rounded-full px-6 py-3 text-white"
         style={{ backgroundColor }}
-        onClick={() => addRecoveryAccount(loginProvider, adapter)}
-      >
+        onClick={() => addRecoveryAccount(loginProvider, adapter)}>
         {label}
       </button>
     );
@@ -185,8 +183,31 @@ function Settings() {
                 disabled={guardian1 === "" || guardian2 === "" || guardian3 === ""}
                 className="mt-10 mb-0 text-center justify-center items-center flex rounded-full px-6 py-3 text-white"
                 style={guardian1 === "" || guardian2 === "" || guardian3 === "" ? { backgroundColor: "#303030" } : { backgroundColor: "#599cb3" }}
-                onClick={() => console.log(guardian1, guardian2, guardian3, recoveryAccounts, "guardians")}
-              >
+                onClick={async () => {
+                  const gaurdians = `${guardian1},${guardian2},${guardian3}`;
+                  let recovery_addresses = "";
+                  recoveryAccounts.forEach((ra) => {
+                    recovery_addresses += `${recoveryAccounts},`;
+                  });
+                  recovery_addresses = recovery_addresses.substring(0, recoveryAccounts.length - 2);
+                  const address = await provider.getAddress();
+                  const raw = JSON.stringify({
+                    public_address: address,
+                    recovery_addresses,
+                    gaurdians,
+                    nominee: guardian1,
+                  });
+                  const requestOptions = {
+                    method: "POST",
+                    headers: new Headers({ "content-type": "application/json" }),
+                    body: raw,
+                    redirect: "follow" as RequestRedirect,
+                  };
+                  fetch("http://localhost:2020/user/set_recovery", requestOptions)
+                    .then((response) => response.json())
+                    .then((result) => console.log(result))
+                    .catch((error) => console.log("error", error));
+                }}>
                 Finish Setting up Recovery
               </button>
             </Form>

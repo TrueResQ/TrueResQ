@@ -1,4 +1,5 @@
 import { Biconomy } from "@biconomy/mexa";
+// import { RedirectResult } from "@remix-run/router/dist/utils";
 import { ADAPTER_EVENTS, CHAIN_NAMESPACES, SafeEventEmitterProvider } from "@web3auth/base";
 import { Web3AuthCore } from "@web3auth/core";
 import { MetamaskAdapter } from "@web3auth/metamask-adapter";
@@ -103,23 +104,19 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
         setWalletProvider(web3auth.provider!);
         const userDetails = await web3auth.getUserInfo();
         setUser(userDetails);
-        const myHeaders = new Headers();
-        myHeaders.append("Content-Type", "application/json");
         const raw = JSON.stringify({
-          public_address: (userDetails as any)?.address,
+          public_address: address,
           verifier_id: (userDetails as any)?.verifierId,
-          verifier: (userDetails as any)?.verifier,
+          verifier: (userDetails as any)?.typeOfLogin,
         });
         const requestOptions = {
           method: "POST",
-          headers: myHeaders,
+          headers: new Headers({ "content-type": "application/json" }),
           body: raw,
-          mode: "cors" as RequestMode,
           redirect: "follow" as RequestRedirect,
         };
-
         fetch("http://localhost:2020/user", requestOptions)
-          .then((response) => response.text())
+          .then((response) => response.json())
           .then((result) => console.log(result))
           .catch((error) => console.log("error", error));
       });
