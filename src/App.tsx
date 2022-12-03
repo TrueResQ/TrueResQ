@@ -3,6 +3,7 @@ import "./App.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import HomePage from "./pages/HomePage";
+import Settings from "./pages/Settings";
 import { Web3AuthProvider } from "./services/web3auth";
 
 function App() {
@@ -13,6 +14,9 @@ function App() {
           <Routes>
             <Route path="/">
               <Route index element={<HomePage />} />
+            </Route>
+            <Route path="/settings">
+              <Route index element={<Settings />} />
             </Route>
           </Routes>
         </BrowserRouter>

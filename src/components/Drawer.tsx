@@ -1,7 +1,6 @@
 import { useLocation, useNavigate } from "react-router-dom";
 
 import { useWeb3Auth } from "../services/web3auth";
-import ConnectWeb3AuthButton from "./ConnectWeb3AuthButton";
 interface DrawerProps {
   isOpen: boolean;
   setOpen: any;
@@ -12,6 +11,9 @@ const Drawer = ({ isOpen, setOpen }: DrawerProps) => {
   const navigate = useNavigate();
   function goToHome() {
     navigate("/");
+  }
+  function goToSettings() {
+    navigate("/settings");
   }
   const location = useLocation();
   function linktoGo(label: string, path: any) {
@@ -65,6 +67,7 @@ const Drawer = ({ isOpen, setOpen }: DrawerProps) => {
             <strong className="px-4 block p-1 text-xs font-medium text-gray-400 uppercase">MENU</strong>
             <nav className="flex flex-col mt-6">
               {location.pathname === "/" ? activePage("Default Parameters") : linktoGo("Default Parameters", goToHome)}
+              {location.pathname === "/settings" ? activePage("Settings") : linktoGo("Settings", goToSettings)}
               {provider ? (
                 <div
                   onClick={() => {
