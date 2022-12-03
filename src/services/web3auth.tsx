@@ -67,7 +67,17 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
   const [web3biconomy, setWeb3biconomy] = useState<Web3 | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const clientId = "BJRZ6qdDTbj6Vd5YXvV994TYCqY42-PxldCetmvGTUdoq6pkCqdpuC1DIehz76zuYdaq1RJkXGHuDraHRhCQHvA";
-
+  const chainConfig = {
+    chainNamespace: CHAIN_NAMESPACES.EIP155,
+    chainId: "0x13881", // hex of 80001, polygon testnet
+    rpcTarget: "https://rpc.ankr.com/polygon_mumbai",
+    // Avoid using public rpcTarget in production.
+    // Use services like Infura, Quicknode etc
+    displayName: "Polygon Mainnet",
+    blockExplorer: "https://mumbai.polygonscan.com/",
+    ticker: "MATIC",
+    tickerName: "Matic",
+  };
   const uiConsole = (...args: unknown[]): void => {
     const el = document.querySelector("#console");
     if (el) {
@@ -129,18 +139,7 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
       try {
         setIsLoading(true);
         const web3AuthInstance = new Web3Auth({
-          chainConfig: {
-            chainNamespace: CHAIN_NAMESPACES.EIP155,
-            chainId: "0x13881", // hex of 80001, polygon testnet
-            rpcTarget: "https://rpc.ankr.com/polygon_mumbai",
-            // Avoid using public rpcTarget in production.
-            // Use services like Infura, Quicknode etc
-            displayName: "Polygon Mainnet",
-            blockExplorer: "https://mumbai.polygonscan.com/",
-            ticker: "MATIC",
-            tickerName: "Matic",
-          },
-          // get your client id from https://dashboard.web3auth.io
+          chainConfig,
           clientId,
           storageKey: "local",
         });
@@ -259,18 +258,7 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
 
   const addRecoveryAccount = async (loginProvider, adapter) => {
     const web3AuthInstance = new Web3AuthCore({
-      chainConfig: {
-        chainNamespace: CHAIN_NAMESPACES.EIP155,
-        chainId: "0x13881", // hex of 80001, polygon testnet
-        rpcTarget: "https://rpc.ankr.com/polygon_mumbai",
-        // Avoid using public rpcTarget in production.
-        // Use services like Infura, Quicknode etc
-        displayName: "Polygon Mainnet",
-        blockExplorer: "https://mumbai.polygonscan.com/",
-        ticker: "MATIC",
-        tickerName: "Matic",
-      },
-      // get your client id from https://dashboard.web3auth.io
+      chainConfig,
       clientId,
       storageKey: "session",
     });
@@ -308,6 +296,12 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
       verifierId = recoveryDetails.verifierId;
     } else {
       verifierId = "metamask";
+    }
+    const primaryAccount = await provider.getAddress();
+    if (primaryAccount === address) {
+      // eslint-disable-next-line no-alert
+      alert("Cannot add primary account as recovery account");
+      throw new Error("Cannot add primary account as recovery account");
     }
     setRecoveryAccounts([...recoveryAccounts, { address, typeOfLogin, verifierId }]);
     await web3AuthInstance.logout();
