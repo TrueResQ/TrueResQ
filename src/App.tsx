@@ -4,7 +4,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import HomePage from "./pages/HomePage";
 import Settings from "./pages/Settings";
-import { useWeb3Auth, Web3AuthProvider } from "./services/web3auth";
+import { Web3AuthProvider } from "./services/web3auth";
 
 function App() {
   return (
