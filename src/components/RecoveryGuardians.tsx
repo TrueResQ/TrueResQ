@@ -1,13 +1,13 @@
 function RecoveryGuardians() {
   return (
-    <div className="w-full h-full flex flex-1 flex-col bg-gray-50 items-center justify-flex-start">
-      <div className="recoveryGuardians">
+    <div className="w-full h-full flex flex-1 flex-col bg-background-secondary items-center justify-flex-start">
+      <div className="flex bg-background p-4 m-2 rounded-lg">
         <div className="flex-col" style={{ marginRight: "20px" }}>
           Guardian 1
         </div>
         <div className="flex-col">himanshu@tor.us</div>
       </div>
-      <div className="recoveryGuardians">
+      <div className="flex bg-background p-4 m-2 rounded-lg">
         <div className="flex-col" style={{ marginRight: "20px" }}>
           Guardian 2
         </div>

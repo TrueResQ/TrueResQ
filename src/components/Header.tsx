@@ -15,8 +15,8 @@ const Header = () => {
   }
 
   return (
-    <header className="sticky max-w-screen z-10">
-      <div className="px-4 py-4 mx-auto sm:py-2 sm:px-6 md:px-8 border-b">
+    <header className="sticky max-w-screen z-10 bg-background">
+      <div className="px-4 py-4 mx-auto sm:py-2 sm:px-6 md:px-8">
         <div className="justify-between items-center flex">
           <div className="flex flex-row justify-center py-3" onClick={() => goToHome()}>
             <img src={logo} style={{ height: "1.75rem", paddingLeft: "0.5rem" }} />

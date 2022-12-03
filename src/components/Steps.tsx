@@ -22,7 +22,7 @@ function renderStep(stepName: string, stepDetails: string, image: any, index: nu
 
 function Steps({ stepData }: StepsProps) {
   return (
-    <nav className="w-11/12 px-4 sm:px-6 lg:px-8 flex text-sm font-medium border-b border-gray-100">
+    <nav className="w-11/12 px-4 sm:px-6 lg:px-8 flex text-sm font-medium ">
       {stepData.map((step, index) => renderStep(step.stepName, step.stepDetails, step.image, index, stepData.length, step.active))}
     </nav>
   );

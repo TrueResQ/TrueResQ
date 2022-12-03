@@ -128,13 +128,13 @@ function RecoveryLogin() {
   ];
 
   return (
-    <main className="flex flex-col h-screen z-0">
+    <main className="flex flex-col h-screen z-0 text-white">
       <div className="flex flex-1 overflow-hidden">
-        <div className=" w-full h-full flex flex-1 flex-col bg-gray-50 items-center justify-flex-center overflow-scroll">
+        <div className=" w-full h-full flex flex-1 flex-col bg-background-secondary items-center justify-flex-center overflow-scroll">
           <h1 className="w-11/12 px-4 pt-16 pb-8 sm:px-6 lg:px-8 text-2xl font-bold text-center sm:text-3xl">Login with Recovery Account</h1>
 
           <div className="w-11/12 px-4 sm:px-6 lg:px-8 z-0 flex justify-center">
-            <div className="p-7 flex flex-3 flex-col bg-white">
+            <div className="p-7 flex flex-3 flex-col bg-background-secondary">
               {Buttons.map((button) => {
                 if (loginMethods.includes(button.loginProvider))
                   return generateButton(button.loginProvider, button.adapter, button.label, "#e2e8f0", true);

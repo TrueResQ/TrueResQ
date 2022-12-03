@@ -9,11 +9,11 @@ type GuardianProps = {
 
 const Table = (props: GuardianProps) => {
   return (
-    <div className="overflow-hidden overflow-x-auto rounded-lg border border-gray-200">
-      <table className="min-w-full divide-y divide-gray-200 text-sm">
-        <thead className="bg-gray-100">
+    <div className="overflow-hidden overflow-x-auto rounded-lg border border-background">
+      <table className="min-w-full divide-y divide-background text-sm">
+        <thead className="bg-background">
           <tr>
-            <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">
+            <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-100">
               <div className="flex items-center gap-2">
                 Requester address
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-gray-700" viewBox="0 0 20 20" fill="currentColor">
@@ -25,7 +25,7 @@ const Table = (props: GuardianProps) => {
                 </svg>
               </div>
             </th>
-            <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">
+            <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-100">
               <div className="flex items-center gap-2">
                 Requester Email
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-gray-700" viewBox="0 0 20 20" fill="currentColor">
@@ -37,7 +37,7 @@ const Table = (props: GuardianProps) => {
                 </svg>
               </div>
             </th>
-            <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">Status</th>
+            <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-100">Status</th>
           </tr>
         </thead>
 
@@ -45,8 +45,8 @@ const Table = (props: GuardianProps) => {
           {props.requests.map((request) => {
             return (
               <tr>
-                <td className="whitespace-nowrap px-4 py-2 text-gray-700">{request.address}</td>
-                <td className="whitespace-nowrap px-4 py-2 text-gray-700">{request.email}</td>
+                <td className="whitespace-nowrap px-4 py-2 text-gray-300">{request.address}</td>
+                <td className="whitespace-nowrap px-4 py-2 text-gray-300">{request.email}</td>
                 <td className="whitespace-nowrap px-4 py-2">
                   {request.status === "pending" && (
                     <div className="flex-row">
