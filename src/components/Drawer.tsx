@@ -15,6 +15,9 @@ const Drawer = ({ isOpen, setOpen }: DrawerProps) => {
   function goToSettings() {
     navigate("/settings");
   }
+  function goToRecoveryRequests() {
+    navigate("/recoveryRequests");
+  }
   const location = useLocation();
   function linktoGo(label: string, path: any) {
     return (
@@ -68,6 +71,8 @@ const Drawer = ({ isOpen, setOpen }: DrawerProps) => {
             <nav className="flex flex-col mt-6">
               {location.pathname === "/" ? activePage("Default Parameters") : linktoGo("Default Parameters", goToHome)}
               {location.pathname === "/settings" ? activePage("Settings") : linktoGo("Settings", goToSettings)}
+              {location.pathname === "/recoveryRequests" ? activePage("recoveryRequests") : linktoGo("recoveryRequests", goToRecoveryRequests)}
+
               {provider ? (
                 <div
                   onClick={() => {

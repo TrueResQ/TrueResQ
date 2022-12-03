@@ -1,6 +1,6 @@
 // @ts-ignore
 import starkwareCrypto from "@starkware-industries/starkware-crypto-utils";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import Form from "../components/Form";
@@ -9,11 +9,13 @@ import Sidebar from "../components/Sidebar";
 import Tabs from "../components/Tabs";
 import { useWeb3Auth } from "../services/web3auth";
 
-function Settings() {
+function AskGuardians() {
   const { provider, address, balance, recoveryAccounts, addRecoveryAccount } = useWeb3Auth();
   const navigate = useNavigate();
 
-  // if (!provider) navigate("/");
+  useEffect(() => {
+    if (!provider) navigate("/");
+  }, []);
 
   const [tab, setTab] = useState("recovery");
   const formDetailsRecovery = [];
@@ -102,4 +104,4 @@ function Settings() {
   );
 }
 
-export default Settings;
+export default AskGuardians;
