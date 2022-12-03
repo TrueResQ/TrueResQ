@@ -3,16 +3,18 @@ interface StepsProps {
 }
 
 function renderStep(stepName: string, stepDetails: string, image: any, index: number, stepDataLength: number, active?: boolean) {
-  let tabMode = "p-4 flex text-lg font-bold -mb-px border-b border-transparent w-full";
+  let tabMode = "p-4 text-lg font-bold -mb-px border-b border-transparent w-full";
   if (active) {
-    tabMode = "p-4 flex text-lg font-bold -mb-px border-b-2 border-current text-primary w-full";
+    tabMode = "p-4 text-lg font-bold -mb-px border-b-2 border-current text-primary w-full";
   }
   return (
     <a className={tabMode}>
       {image}
-      <p className="leading-none">
-        <strong className="block font-medium"> {stepName} </strong>
-        <small className="mt-1">{stepDetails}</small>
+      <p className="p-1 mt-2 flex flex-col">
+        <strong className="font-medium">
+          {index + 1}. {stepName}
+        </strong>
+        <small className="leading-none mt-2">{stepDetails}</small>
       </p>
     </a>
   );

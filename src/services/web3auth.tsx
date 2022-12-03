@@ -148,6 +148,9 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
           adapterSettings: {
             network: "cyan",
           },
+          loginSettings: {
+            mfaLevel: "none",
+          },
         });
         web3AuthInstance.configureAdapter(openloginAdapter);
         setWeb3Auth(web3AuthInstance);
@@ -268,6 +271,9 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
         network: "cyan",
         _sessionNamespace: r,
         uxMode: "popup",
+      },
+      loginSettings: {
+        mfaLevel: "none",
       },
     });
     web3AuthInstance.configureAdapter(openloginAdapter);
