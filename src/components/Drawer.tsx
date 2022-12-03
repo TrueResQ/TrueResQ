@@ -13,24 +13,6 @@ const Drawer = ({ isOpen, setOpen }: DrawerProps) => {
   function goToHome() {
     navigate("/");
   }
-  function goToWithdrawal() {
-    navigate("/withdrawal");
-  }
-  function goToDeposit() {
-    navigate("/deposit");
-  }
-  function goToMinting() {
-    navigate("/minting");
-  }
-  function goToTransfer() {
-    navigate("/transfer");
-  }
-  function goToSettlement() {
-    navigate("/settlement");
-  }
-  function goToExplorer() {
-    navigate("/explorer");
-  }
   const location = useLocation();
   function linktoGo(label: string, path: any) {
     return (
@@ -83,12 +65,6 @@ const Drawer = ({ isOpen, setOpen }: DrawerProps) => {
             <strong className="px-4 block p-1 text-xs font-medium text-gray-400 uppercase">MENU</strong>
             <nav className="flex flex-col mt-6">
               {location.pathname === "/" ? activePage("Default Parameters") : linktoGo("Default Parameters", goToHome)}
-              {location.pathname === "/withdrawal" ? activePage("Withdrawal") : linktoGo("Withdrawal", goToWithdrawal)}
-              {location.pathname === "/deposit" ? activePage("Deposit") : linktoGo("Deposit", goToDeposit)}
-              {location.pathname === "/minting" ? activePage("Minting") : linktoGo("Minting", goToMinting)}
-              {location.pathname === "/transfer" ? activePage("Transfer") : linktoGo("Transfer", goToTransfer)}
-              {location.pathname === "/settlement" ? activePage("Settlement") : linktoGo("Settlement", goToSettlement)}
-              {location.pathname === "/explorer" ? activePage("StarkEx Explorer") : linktoGo("StarkEx Explorer", goToExplorer)}
               {provider ? (
                 <div
                   onClick={() => {

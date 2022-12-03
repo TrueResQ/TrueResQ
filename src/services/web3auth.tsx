@@ -1,4 +1,3 @@
-import starkwareCrypto from "@starkware-industries/starkware-crypto-utils";
 import { ADAPTER_EVENTS, CHAIN_NAMESPACES, SafeEventEmitterProvider } from "@web3auth/base";
 import { Web3Auth } from "@web3auth/modal";
 import { createContext, ReactNode, useCallback, useContext, useEffect, useState } from "react";
@@ -16,30 +15,6 @@ export interface IWeb3AuthContext {
   login: () => Promise<void>;
   logout: () => Promise<void>;
   getUserInfo: () => Promise<any>;
-  getStarkAccount: () => Promise<any>;
-  getStarkKey: (provider: any) => Promise<any>;
-  getLastBatch: () => Promise<void>;
-  getBatch: (batch: number) => Promise<void>;
-  onMintRequest: (amount: string, tokenId: string, vaultId: string) => Promise<void>;
-  onDepositRequest: (amount: string, tokenId: string, vaultId: string) => Promise<void>;
-  onL1DepositRequest: (amount: string, assetType: string, vaultId: string) => Promise<void>;
-  onWithdrawalRequest: (amount: string, tokenId: string, vaultId: string) => Promise<void>;
-  onL1WithdrawalRequest: (amount: string, vaultId: string, assetType: string) => Promise<void>;
-  onViewBalanceRequest: (assetType: string, vaultId: string) => Promise<void>;
-  onViewDepositBalanceRequest: (assetType: string, vaultId: string) => Promise<void>;
-  onTransferRequest: (
-    amount: string,
-    nonce: string,
-    sender_public_key: string,
-    sender_vault_id: string,
-    token: string,
-    receiver_public_key: string,
-    receiver_vault_id: string,
-    expirationTimestamp: string,
-    signaturer: string,
-    signatures: string
-  ) => Promise<void>;
-  onSettlementRequest: (settlementInfo: any, party_a_order: any, party_b_order: any) => Promise<void>;
 }
 
 export const Web3AuthContext = createContext<IWeb3AuthContext>({
@@ -53,19 +28,6 @@ export const Web3AuthContext = createContext<IWeb3AuthContext>({
   login: async () => {},
   logout: async () => {},
   getUserInfo: async () => {},
-  getStarkAccount: async () => {},
-  getStarkKey: async () => {},
-  getLastBatch: async () => {},
-  getBatch: async () => {},
-  onMintRequest: async () => {},
-  onDepositRequest: async () => {},
-  onL1DepositRequest: async () => {},
-  onWithdrawalRequest: async () => {},
-  onL1WithdrawalRequest: async () => {},
-  onViewBalanceRequest: async () => {},
-  onViewDepositBalanceRequest: async () => {},
-  onTransferRequest: async () => {},
-  onSettlementRequest: async () => {},
 });
 
 export function useWeb3Auth(): IWeb3AuthContext {
@@ -95,9 +57,8 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
   const setWalletProvider = useCallback(async (web3authProvider: SafeEventEmitterProvider | null) => {
     const walletProvider = getWalletProvider(web3authProvider, uiConsole);
     setProvider(walletProvider);
-    setStarkKey(await walletProvider?.getStarkKey());
-    setAddress(await walletProvider.getETHAddress());
-    setBalance(await walletProvider.getETHBalance());
+    setAddress(await walletProvider.getAddress());
+    setBalance(await walletProvider.getBalance());
   }, []);
 
   useEffect(() => {
@@ -132,9 +93,15 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
         const clientId = "BJRZ6qdDTbj6Vd5YXvV994TYCqY42-PxldCetmvGTUdoq6pkCqdpuC1DIehz76zuYdaq1RJkXGHuDraHRhCQHvA";
         const web3AuthInstance = new Web3Auth({
           chainConfig: {
-            displayName: "StarkEx",
-            chainNamespace: CHAIN_NAMESPACES.OTHER,
-            tickerName: "StarkEx",
+            chainNamespace: CHAIN_NAMESPACES.EIP155,
+            chainId: "0x13881", // hex of 80001, polygon testnet
+            rpcTarget: "https://rpc.ankr.com/polygon_mumbai",
+            // Avoid using public rpcTarget in production.
+            // Use services like Infura, Quicknode etc
+            displayName: "Polygon Mainnet",
+            blockExplorer: "https://mumbai.polygonscan.com/",
+            ticker: "MATIC",
+            tickerName: "Matic",
           },
           // get your client id from https://dashboard.web3auth.io
           clientId,
@@ -184,146 +151,20 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
     uiConsole(user);
   };
 
-  const getStarkAccount = async () => {
+  const getAddress = async () => {
     if (!provider) {
       uiConsole("provider not initialized yet");
       return;
     }
-    await provider.getStarkAccount();
+    await provider.getAddress();
   };
 
-  const getETHAddress = async () => {
-    if (!provider) {
-      uiConsole("provider not initialized yet");
-      return;
-    }
-    await provider.getETHAddress();
-  };
-
-  const getETHBalance = async () => {
+  const getBalance = async () => {
     if (!web3Auth) {
       uiConsole("web3auth not initialized yet");
       return;
     }
-    await provider.getETHBalance();
-  };
-
-  const getStarkKey = async () => {
-    if (!provider) {
-      uiConsole("provider not initialized yet 163");
-      return;
-    }
-    setStarkKey(await provider.getStarkKey());
-  };
-
-  const onMintRequest = async (amount: string, tokenId: string, vaultId: string) => {
-    if (!provider) {
-      uiConsole("provider not initialized yet");
-      return;
-    }
-    await provider.onMintRequest(amount, tokenId, vaultId);
-  };
-
-  const onDepositRequest = async (amount: string, tokenId: string, vaultId: string) => {
-    if (!provider) {
-      uiConsole("provider not initialized yet");
-      return;
-    }
-    await provider.onDepositRequest(amount, tokenId, vaultId);
-  };
-
-  const onL1DepositRequest = async (amount: string, assetType: string, vaultId: string) => {
-    if (!provider) {
-      uiConsole("provider not initialized yet");
-      return;
-    }
-    await provider.onL1DepositRequest(amount, assetType, vaultId);
-  };
-
-  const onWithdrawalRequest = async (amount: string, tokenId: string, vaultId: string) => {
-    if (!provider) {
-      uiConsole("provider not initialized yet");
-      return;
-    }
-    await provider.onWithdrawalRequest(amount, tokenId, vaultId);
-  };
-
-  const onL1WithdrawalRequest = async (amount: string, vaultId: string, assetType: string) => {
-    if (!provider) {
-      uiConsole("provider not initialized yet");
-      return;
-    }
-    await provider.onL1WithdrawalRequest(amount, vaultId, assetType);
-  };
-
-  const onViewBalanceRequest = async (assetType: string, vaultId: string) => {
-    if (!provider) {
-      uiConsole("provider not initialized yet");
-      return;
-    }
-    await provider.onViewBalanceRequest(assetType, vaultId);
-  };
-
-  const onViewDepositBalanceRequest = async (assetId: string, vaultId: string) => {
-    if (!provider) {
-      uiConsole("provider not initialized yet");
-      return;
-    }
-    await provider.onViewDepositBalanceRequest(assetId, vaultId);
-  };
-
-  const getLastBatch = async () => {
-    if (!provider) {
-      uiConsole("provider not initialized yet");
-      return;
-    }
-    await provider.getLastBatch();
-  };
-
-  const getBatch = async (batch: number) => {
-    if (!provider) {
-      uiConsole("provider not initialized yet");
-      return;
-    }
-    await provider.getBatch(batch);
-  };
-
-  const onTransferRequest = async (
-    amount: string,
-    nonce: string,
-    sender_public_key: string,
-    sender_vault_id: string,
-    token: string,
-    receiver_public_key: string,
-    receiver_vault_id: string,
-    expirationTimestamp: string,
-    signaturer: string,
-    signatures: string
-  ) => {
-    if (!provider) {
-      uiConsole("provider not initialized yet");
-      return;
-    }
-    await provider.onTransferRequest(
-      amount,
-      nonce,
-      sender_public_key,
-      sender_vault_id,
-      token,
-      receiver_public_key,
-      receiver_vault_id,
-      expirationTimestamp,
-      signaturer,
-      signatures
-    );
-  };
-
-  const onSettlementRequest = async (settlementInfo: any, party_a_order: any, party_b_order: any) => {
-    if (!provider) {
-      uiConsole("provider not initialized yet");
-      return;
-    }
-    await provider.onSettlementRequest(settlementInfo, party_a_order, party_b_order);
+    await provider.getBalance();
   };
 
   const contextProvider = {
@@ -337,21 +178,8 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
     login,
     logout,
     getUserInfo,
-    getStarkAccount,
-    getStarkKey,
-    getETHAddress,
-    getETHBalance,
-    getLastBatch,
-    getBatch,
-    onMintRequest,
-    onDepositRequest,
-    onL1DepositRequest,
-    onWithdrawalRequest,
-    onL1WithdrawalRequest,
-    onViewBalanceRequest,
-    onViewDepositBalanceRequest,
-    onTransferRequest,
-    onSettlementRequest,
+    getAddress,
+    getBalance,
   };
   return <Web3AuthContext.Provider value={contextProvider}>{children}</Web3AuthContext.Provider>;
 };

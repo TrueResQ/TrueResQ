@@ -22,7 +22,7 @@
 }
 
 .title a {
-  color: #0070f3;
+  color: #599cb3;
   text-decoration: none;
 }
 
@@ -36,10 +36,10 @@
   margin: 0.5rem;
   padding: 0.7rem;
   text-align: center;
-  color: #0070f3;
+  color: #599cb3;
   background-color: #fafafa;
   text-decoration: none;
-  border: 1px solid #0070f3;
+  border: 1px solid #599cb3;
   border-radius: 10px;
   transition: color 0.15s ease, border-color 0.15s ease;
   width: 100%;
@@ -96,7 +96,7 @@
 .headerButton {
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
-  background: #0364ff;
+  background: #599cb3;
   box-shadow: 2px 2px 12px rgba(3, 100, 255, 0.05);
   border-radius: 100px;
   flex-direction: row;
