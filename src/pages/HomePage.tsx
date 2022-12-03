@@ -5,7 +5,7 @@ import Sidebar from "../components/Sidebar";
 import { useWeb3Auth } from "../services/web3auth";
 
 function HomePage() {
-  const { provider, address, balance } = useWeb3Auth();
+  const { provider, address, balance, sendTransaction } = useWeb3Auth();
   const formDetails = [
     {
       label: "Address",
@@ -29,7 +29,15 @@ function HomePage() {
             <div className=" w-full h-full flex flex-1 flex-col bg-gray-50 items-center justify-flex-start ">
               <h1 className="w-11/12 px-4 pt-16 pb-8 sm:px-6 lg:px-8 text-2xl font-bold text-center sm:text-3xl">Welcome to TrueResQ</h1>
               <div className="py-16 w-11/12 ">
-                <Form heading="Your Account Details" formDetails={formDetails} />
+                <Form heading="Your Account Details" formDetails={formDetails}>
+                  <button
+                    className="mt-1 mb-0 text-center justify-center items-center flex rounded-full px-6 py-3 text-white"
+                    style={{ backgroundColor: "#599cb3" }}
+                    onClick={() => sendTransaction()}
+                  >
+                    Send Transaction
+                  </button>
+                </Form>
               </div>
             </div>
           </div>

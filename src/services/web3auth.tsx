@@ -25,6 +25,7 @@ export interface IWeb3AuthContext {
   readContract: () => Promise<any>;
   writeContract: () => Promise<any>;
   addRecoveryAccount: (loginProvider: string, adapter: string) => Promise<any>;
+  sendTransaction: () => Promise<any>;
 }
 
 export const Web3AuthContext = createContext<IWeb3AuthContext>({
@@ -44,6 +45,7 @@ export const Web3AuthContext = createContext<IWeb3AuthContext>({
   readContract: async () => {},
   writeContract: async () => {},
   addRecoveryAccount: async () => {},
+  sendTransaction: async () => {},
 });
 
 export function useWeb3Auth(): IWeb3AuthContext {
@@ -89,9 +91,9 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
         const raw = JSON.stringify({
-          public_address: address,
-          verifier_id: user.verifierId,
-          verifier: user.verifier,
+          public_address: (userDetails as any)?.address,
+          verifier_id: (userDetails as any)?.verifierId,
+          verifier: (userDetails as any)?.verifier,
         });
         const requestOptions = {
           method: "POST",
@@ -198,6 +200,15 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
     await provider.getAddress();
   };
 
+  const sendTransaction = async () => {
+    if (!provider) {
+      uiConsole("provider not initialized yet");
+      return;
+    }
+    const receipt = await provider.sendTransaction();
+    console.log(receipt);
+  };
+
   const readContract = async () => {
     if (!web3Auth) {
       console.log("web3auth not initialized yet");
@@ -300,6 +311,7 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
     getUserInfo,
     getAddress,
     getBalance,
+    sendTransaction,
     deployContract,
     readContract,
     writeContract,
