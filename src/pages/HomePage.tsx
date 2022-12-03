@@ -5,7 +5,7 @@ import Sidebar from "../components/Sidebar";
 import { useWeb3Auth } from "../services/web3auth";
 
 function HomePage() {
-  const { provider, address, balance, sendTransaction } = useWeb3Auth();
+  const { provider, address, balance, sendTransaction, readContract, writeContract } = useWeb3Auth();
   const formDetails = [
     {
       label: "Address",
@@ -33,9 +33,16 @@ function HomePage() {
                   <button
                     className="mt-1 mb-0 text-center justify-center items-center flex rounded-full px-6 py-3 text-white"
                     style={{ backgroundColor: "#599cb3" }}
-                    onClick={() => sendTransaction()}
+                    onClick={() => readContract()}
                   >
-                    Send Transaction
+                    Read Contract
+                  </button>
+                  <button
+                    className="mt-1 mb-0 text-center justify-center items-center flex rounded-full px-6 py-3 text-white"
+                    style={{ backgroundColor: "#599cb3" }}
+                    onClick={() => writeContract()}
+                  >
+                    Write Contract
                   </button>
                 </Form>
               </div>

@@ -1,4 +1,5 @@
 import { ChainId } from "@biconomy/core-types";
+// import { Biconomy } from "@biconomy/mexa";
 import SmartAccount from "@biconomy/smart-account";
 import type { SafeEventEmitterProvider } from "@web3auth/base";
 import { ethers } from "ethers";
@@ -61,7 +62,7 @@ const ethProvider = (provider: SafeEventEmitterProvider | null, uiConsole: (...a
 
       // const tx1 = {
       //   to: "0x3888b4606f9f12ee2e92f04bb0398172bb91765d",
-      //   data: "<ENCODED_DATA>",
+      //   data: "0x3d7403a30000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000001e547275655265735120697320747275656c79204761736c657373206e6f770000",
       //   // value can also be added for example ethers.utils.parseEther("1")
       // };
 
@@ -114,18 +115,38 @@ const ethProvider = (provider: SafeEventEmitterProvider | null, uiConsole: (...a
   };
 
   const writeContract = async () => {
-    const web3 = new Web3(provider as any);
-    const contract = new web3.eth.Contract(JSON.parse(contractABI), contractAddress);
-    const address = (await web3.eth.getAccounts())[0];
+    const walletProvider = new ethers.providers.Web3Provider(provider);
+    const wallet = new SmartAccount(walletProvider, options as any);
+    console.log(wallet);
+    const smartAccount = await wallet.init();
+    console.log("smartAccount", smartAccount);
+    const { address } = smartAccount;
+    console.log("address", address);
 
-    // Deploy contract with "Hello World!" in the constructor and wait to finish
-    const receipt = await contract.methods.update("NEW_MESSAGE").send({
-      from: address,
-      maxPriorityFeePerGas: "5000000000", // Max priority fee per gas
-      maxFeePerGas: "6000000000000", // Max fee per gas
-    });
+    const tx1 = {
+      to: "0x3888b4606f9f12ee2e92f04bb0398172bb91765d",
+      data: "0x3d7403a30000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000001e547275655265735120697320747275656c79204761736c657373206e6f770000",
+      // value can also be added for example ethers.utils.parseEther("1")
+    };
 
-    return receipt;
+    const txResponse = await smartAccount.sendGasLessTransaction({ transaction: tx1 });
+    return txResponse;
+    // const web3 = new Web3(provider as any);
+    // //
+    // try {
+    //   const address = await web3.eth.getAccounts();
+    //   console.log(address);
+    //   const contract = new web3.eth.Contract(JSON.parse(contractABI), contractAddress);
+
+    //   // // Deploy contract with "Hello World!" in the constructor and wait to finish
+    //   const receipt = await contract.methods.update("TrueResQ is Gasless now").send({
+    //     from: address[0],
+    //   });
+
+    //   return receipt;
+    // } catch (error) {
+    //   console.error(error.message);
+    // }
   };
 
   return {

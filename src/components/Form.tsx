@@ -1,11 +1,10 @@
-import { Dispatch, SetStateAction } from "react";
-
 interface FormProps {
   heading?: string;
   headingCenter?: boolean;
   formDetails: {
     label: string;
     input: string;
+    placeholder?: string;
     readOnly?: boolean;
     onChange?: any;
   }[];
@@ -28,6 +27,7 @@ function Form({ heading, headingCenter, formDetails, children }: FormProps) {
                     id="email"
                     className="w-full p-4 pr-12 text-sm border-gray-200 rounded-lg shadow-sm  z-0"
                     value={formDetail.input}
+                    placeholder={formDetail.placeholder}
                     onChange={(e) => {
                       formDetail.onChange(e.target.value as string);
                     }}
@@ -36,6 +36,7 @@ function Form({ heading, headingCenter, formDetails, children }: FormProps) {
                   <input
                     type="email"
                     id="email"
+                    placeholder={formDetail.placeholder}
                     className="w-full p-4 pr-12 text-sm border-gray-200 rounded-lg shadow-sm  z-0"
                     value={formDetail.input}
                     {...(formDetail.readOnly ? { readOnly: true } : {})}
