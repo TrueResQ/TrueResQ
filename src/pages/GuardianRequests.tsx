@@ -40,6 +40,8 @@ function GuardianRequests() {
     checkRequestId();
   }, [location]);
 
+  if (!provider) navigate("/");
+
   const [tab, setTab] = useState("recovery");
   const formDetailsRecovery = [];
   const loginMethods = [];
