@@ -28,20 +28,17 @@ function Recovery() {
   const [tab, setTab] = useState("recovery");
 
   return (
-    <main className="flex flex-col h-screen z-0">
-      <Header />
+    <main className="flex flex-col h-screen z-0 text-white">
       <div className="flex flex-1 overflow-hidden">
-        <Sidebar />
-
-        <div className=" w-full h-full flex flex-1 flex-col bg-gray-50 items-center justify-flex-start overflow-scroll">
-          <h1 className="w-11/12 px-4 pt-16 pb-8 sm:px-6 lg:px-8 text-2xl font-bold text-center sm:text-3xl">Guardian Requests</h1>
+        <div className=" w-full h-full flex flex-1 flex-col bg-background-secondary items-center justify-flex-start overflow-scroll">
           {guardiansView && (
             <FaArrowLeft
               onClick={() => toggleGuardians(!guardiansView)}
               className="flex-start"
-              style={{ marginRight: "auto", marginLeft: "10px", cursor: "pointer" }}
+              style={{ marginRight: "auto", marginLeft: "10px", marginTop: "10px", cursor: "pointer" }}
             />
           )}
+          <h1 className="w-11/12 px-4 pt-16 pb-8 sm:px-6 lg:px-8 text-2xl font-bold text-center sm:text-3xl">Guardian Requests</h1>
 
           <div className="flex flex-col">
             <div>

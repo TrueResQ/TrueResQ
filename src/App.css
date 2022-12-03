@@ -37,7 +37,7 @@
   padding: 0.7rem;
   text-align: center;
   color: #599cb3;
-  background-color: #fafafa;
+  background-color: #303030;
   text-decoration: none;
   border: 1px solid #599cb3;
   border-radius: 10px;
@@ -49,14 +49,14 @@
 .card:focus,
 .card:active {
   cursor: pointer;
-  background-color: #f1f1f1;
+  background-color: #303030;
 }
 
 .footer {
   display: flex;
   flex: 1;
   padding: 2rem 0;
-  border-top: 1px solid #eaeaea;
+  border-top: 1px solid #303030;
   justify-content: center;
   align-items: center;
   margin-top: 10rem;
@@ -81,7 +81,7 @@
 }
 
 .headerLogoContainerBorder {
-  border-right: 1px solid #c0c0c0;
+  border-right: 1px solid #303030;
   padding: 0.5rem;
 }
 
@@ -126,11 +126,6 @@ body {
 }
 
 .recoveryGuardians {
-  display: flex;
-  flex-direction: row;
-  background-color: lightgrey;
-  padding: 200;
-  padding: 20px;
-  margin: 10px;
+  
 }
 

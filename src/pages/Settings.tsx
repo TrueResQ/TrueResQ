@@ -128,26 +128,26 @@ function Settings() {
   ];
 
   return (
-    <main className="flex flex-col h-screen z-0">
+    <main className="flex flex-col h-screen z-0 text-white bg-background-secondary">
       <Header />
       <div className="flex flex-1 overflow-hidden">
         <Sidebar />
 
-        <div className=" w-full h-full flex flex-1 flex-col bg-gray-50 items-center justify-flex-start overflow-hidden">
+        <div className=" w-full h-full flex flex-1 flex-col bg-background-secondary items-center justify-flex-start overflow-hidden">
           <h1 className="w-11/12 px-4 pt-16 pb-8 sm:px-6 lg:px-8 text-2xl font-bold text-center sm:text-3xl">Settings</h1>
           <Steps stepData={StepData} />
 
           {step === "recovery" ? (
-            <>
-              <div className="w-11/12 px-4 sm:px-6 lg:px-8 z-0 flex">
-                <div className="p-7 flex flex-3 flex-col overflow-hidden bg-white">
+            <div className="w-11/12 text-center justify-center items-center space-y-4  mt-6">
+              <div className="px-4 sm:px-6 lg:px-8 z-0 flex rounded">
+                <div className="p-8 flex flex-3 flex-col overflow-hidden bg-background rounded-l-lg">
                   {Buttons.map((button) => {
                     if (loginMethods.includes(button.loginProvider))
-                      return generateButton(button.loginProvider, button.adapter, button.label, "#e2e8f0", true);
+                      return generateButton(button.loginProvider, button.adapter, button.label, "#303030", true);
                     return generateButton(button.loginProvider, button.adapter, button.label, button.backgroundColor, false);
                   })}
                 </div>
-                <div className="p-8 flex flex-1 flex-col bg-white overflow-hidden bg-white">
+                <div className="p-8 flex flex-1 flex-col bg-background overflow-hidden bg-white rounded-r-lg">
                   <table className="min-w-full divide-y divide-gray-200 text-sm rounded">
                     <thead className="bg-primary rounded">
                       <tr>
@@ -157,13 +157,13 @@ function Settings() {
                       </tr>
                     </thead>
 
-                    <tbody className="divide-y divide-gray-200">
+                    <tbody>
                       {recoveryAccounts.map((account) => {
                         return (
                           <tr>
-                            <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900 rounded-l">{account.typeOfLogin}</td>
-                            <td className="whitespace-nowrap px-4 py-2 text-gray-700">{account.verifierId}</td>
-                            <td className="whitespace-nowrap px-4 py-2 text-gray-700 rounded-r">{account.address}</td>
+                            <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-300 rounded-l">{account.typeOfLogin}</td>
+                            <td className="whitespace-nowrap px-4 py-2 text-gray-100">{account.verifierId}</td>
+                            <td className="whitespace-nowrap px-4 py-2 text-gray-100 rounded-r">{account.address}</td>
                           </tr>
                         );
                       })}
@@ -173,19 +173,19 @@ function Settings() {
               </div>
               <button
                 disabled={recoveryAccounts.length === 0}
-                className="w-10/12 mt-10 mb-0 text-center justify-center items-center flex rounded-full px-6 py-3 text-white"
-                style={recoveryAccounts.length === 0 ? { backgroundColor: "#e2e8f0" } : { backgroundColor: "#599cb3" }}
+                className="w-full mt-10 mb-0 text-center justify-center items-center flex rounded-full px-6 py-3 text-white"
+                style={recoveryAccounts.length === 0 ? { backgroundColor: "#303030" } : { backgroundColor: "#599cb3" }}
                 onClick={() => setStep("guardians")}
               >
                 Proceed to add Guardians
               </button>
-            </>
+            </div>
           ) : (
             <Form formDetails={formDetailsGuardians}>
               <button
                 disabled={guardian1 === "" || guardian2 === "" || guardian3 === ""}
                 className="mt-10 mb-0 text-center justify-center items-center flex rounded-full px-6 py-3 text-white"
-                style={guardian1 === "" || guardian2 === "" || guardian3 === "" ? { backgroundColor: "#e2e8f0" } : { backgroundColor: "#599cb3" }}
+                style={guardian1 === "" || guardian2 === "" || guardian3 === "" ? { backgroundColor: "#303030" } : { backgroundColor: "#599cb3" }}
                 onClick={() => console.log(guardian1, guardian2, guardian3, recoveryAccounts, "guardians")}
               >
                 Finish Setting up Recovery

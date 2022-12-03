@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/no-unresolved
 import { Biconomy } from "@biconomy/mexa";
 import { ADAPTER_EVENTS, CHAIN_NAMESPACES, SafeEventEmitterProvider } from "@web3auth/base";
 import { Web3AuthCore } from "@web3auth/core";
@@ -145,11 +144,18 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
           chainConfig,
           clientId,
           storageKey: "local",
+          uiConfig: {
+            theme: "dark",
+          },
         });
         subscribeAuthEvents(web3AuthInstance);
         const openloginAdapter = new OpenloginAdapter({
           adapterSettings: {
             network: "cyan",
+            whiteLabel: {
+              name: "TrueResQ",
+              dark: true,
+            },
           },
           loginSettings: {
             mfaLevel: "none",
@@ -329,6 +335,10 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
         network: "cyan",
         _sessionNamespace: r,
         uxMode: "popup",
+        whiteLabel: {
+          name: "TrueResQ",
+          dark: true,
+        },
       },
     });
     web3AuthInstance.configureAdapter(openloginAdapter);

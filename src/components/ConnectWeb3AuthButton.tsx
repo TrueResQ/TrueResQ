@@ -1,4 +1,3 @@
-import web3AuthLogoWhite from "../assets/web3authLogoWhite.svg";
 import { useWeb3Auth } from "../services/web3auth";
 
 const ConnectWeb3AuthButton = () => {
@@ -11,7 +10,7 @@ const ConnectWeb3AuthButton = () => {
         style={{ backgroundColor: "#599cb3" }}
         onClick={logout}
       >
-        <img src={web3AuthLogoWhite} className="headerLogo" />
+        <img className="headerLogo" />
         Disconnect
       </div>
     );
@@ -22,7 +21,7 @@ const ConnectWeb3AuthButton = () => {
       style={{ backgroundColor: "#599cb3" }}
       onClick={login}
     >
-      <img src={web3AuthLogoWhite} className="headerLogo" />
+      <img className="headerLogo" />
       Connect to Web3Auth
     </div>
   );
