@@ -71,12 +71,12 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
   const clientId = "BJRZ6qdDTbj6Vd5YXvV994TYCqY42-PxldCetmvGTUdoq6pkCqdpuC1DIehz76zuYdaq1RJkXGHuDraHRhCQHvA";
   const chainConfig = {
     chainNamespace: CHAIN_NAMESPACES.EIP155,
-    chainId: "0x5",
-    rpcTarget: "https://warmhearted-wispy-thunder.ethereum-goerli.discover.quiknode.pro/3ff8b022c2e2cc7eb89e8674b889216d1924a986/",
-    displayName: "Ethereum Goerli Testnet",
-    blockExplorer: "https://etherscan.io/",
-    ticker: "ETH",
-    tickerName: "Eth",
+    chainId: "0x13881", // hex of 80001, polygon testnet
+    rpcTarget: "https://rpc.ankr.com/polygon_mumbai",
+    displayName: "Polygon Mainnet",
+    blockExplorer: "https://mumbai.polygonscan.com/",
+    ticker: "MATIC",
+    tickerName: "Matic",
   };
   const uiConsole = (...args: unknown[]): void => {
     const el = document.querySelector("#console");
