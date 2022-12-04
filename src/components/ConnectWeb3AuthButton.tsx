@@ -29,7 +29,7 @@ const ConnectWeb3AuthButton = () => {
       onClick={login}
     >
       <img className="headerLogo" />
-      Connect to Web3Auth
+      Get Started
     </div>
   );
 };

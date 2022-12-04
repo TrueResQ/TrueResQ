@@ -5,20 +5,44 @@ import { FaArrowLeft } from "react-icons/fa";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 
 import Form from "../components/Form";
-import Table from "../components/GuardianRequestsTable";
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
 import Tabs from "../components/Tabs";
+import Willtable from "../components/WillGuardiansTable";
 import { useWeb3Auth } from "../services/web3auth";
 const guardianRequests = [
   {
     email: "himanshu@tor.us",
     address: "0x8b1f49491477e0fb46a29fef53f1ea320d13c349",
-    status: "pending", // pending, approved, rejected
-    requestId: "1234567890",
+  },
+  {
+    email: "shahbaz@tor.us",
+    address: "0x6b1f494914bcjnfb46a29fef53f1ea320d13c346",
+  },
+  {
+    email: "yash@tor.us",
+    address: "0x3b1f494914bcjnfty6a29fef53f1ea320d13c343",
   },
 ];
-function GuardianRequests() {
+
+const willGuardianRequests = {
+  guardians: [
+    {
+      email: "himanshu@tor.us",
+      address: "0x8b1f49491477e0fb46a29fef53f1ea320d13c349",
+    },
+    {
+      email: "shahbaz@tor.us",
+      address: "0x6b1f494914bcjnfb46a29fef53f1ea320d13c346",
+    },
+    {
+      email: "yash@tor.us",
+      address: "0x3b1f494914bcjnfty6a29fef53f1ea320d13c343",
+    },
+  ],
+  timeout: "2",
+};
+function SetWill() {
   const { provider, address, balance, recoveryAccounts, addRecoveryAccount } = useWeb3Auth();
   const [requestId, setRequestId] = useState(null);
   const navigate = useNavigate();
@@ -26,7 +50,7 @@ function GuardianRequests() {
 
   const checkRequestId = () => {
     const url = new URL(window.location.href);
-    const reqId = url.searchParams.get("uuid");
+    const reqId = url.searchParams.get("requestId");
     setRequestId(reqId);
   };
   useEffect(() => {
@@ -40,9 +64,6 @@ function GuardianRequests() {
     checkRequestId();
   }, [location]);
 
-  if (!provider) navigate("/");
-
-  const [tab, setTab] = useState("recovery");
   const formDetailsRecovery = [];
   const loginMethods = [];
 
@@ -56,58 +77,14 @@ function GuardianRequests() {
     return null;
   });
 
-  const formDetailsGaurdians = [
-    {
-      label: "Address",
-      input: address as string,
-      readOnly: true,
-    },
-    {
-      label: "Balance",
-      input: balance as string,
-      readOnly: true,
-    },
-  ];
-  const TabData = [
-    {
-      tabName: "Setup Recovery Account",
-      onClick: () => setTab("recovery"),
-      active: tab === "recovery",
-    },
-    {
-      tabName: "Select Gaurdians",
-      onClick: () => setTab("guardians"),
-      active: tab === "guardians",
-    },
-  ];
-
-  const generateButton = (loginProvider, adapter, label, backgroundColor) => {
-    return (
-      <button
-        className="mt-1 mb-0 text-center justify-center items-center flex rounded-full px-6 py-3 text-white"
-        style={{ backgroundColor }}
-        onClick={() => addRecoveryAccount(loginProvider, adapter)}
-      >
-        {label}
-      </button>
-    );
-  };
-
-  const Buttons = [
-    { loginProvider: "google", adapter: "openlogin", label: "Google", backgroundColor: "#dd4b39" },
-    { loginProvider: "facebook", adapter: "openlogin", label: "Facebook", backgroundColor: "#3b5998" },
-    { loginProvider: "twitter", adapter: "openlogin", label: "Twitter", backgroundColor: "#00acee" },
-    { loginProvider: "discord", adapter: "openlogin", label: "Discord", backgroundColor: "#7289da" },
-    { loginProvider: "metamask", adapter: "metamask", label: "Metamask", backgroundColor: "#f6851b" },
-  ];
-
   return (
     <main className="flex flex-col h-screen z-0 text-white">
       <Header />
       <div className="flex flex-1 overflow-hidden">
         <Sidebar />
+
         <div className=" w-full h-full flex flex-1 flex-col bg-background-secondary items-center justify-flex-start overflow-scroll">
-          <h1 className="w-11/12 px-4 pt-16 pb-8 sm:px-6 lg:px-8 text-2xl font-bold text-center sm:text-3xl">Guardian Requests</h1>
+          <h1 className="w-11/12 px-4 pt-16 pb-8 sm:px-6 lg:px-8 text-2xl font-bold text-center sm:text-3xl">Will Guardians</h1>
           {requestId ? (
             <div className="w-11/12 px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-flex-center">
               <div
@@ -129,10 +106,19 @@ function GuardianRequests() {
                     Approve
                   </button>
                 </div>
+                <div>
+                  <button
+                    className="mt-1 mb-0 text-center justify-center items-center flex rounded-full px-6 py-3 text-white"
+                    style={{ backgroundColor: "red", cursor: "pointer" }}
+                    onClick={() => {}}
+                  >
+                    Reject
+                  </button>
+                </div>
               </div>
             </div>
           ) : (
-            <Table requests={guardianRequests} />
+            <Willtable requests={willGuardianRequests} />
           )}
         </div>
       </div>
@@ -140,4 +126,4 @@ function GuardianRequests() {
   );
 }
 
-export default GuardianRequests;
+export default SetWill;
