@@ -38,7 +38,7 @@ const Willtable = (props: WillGuardianProps) => {
               </tbody>
             </table>
           </div>
-          <div className="content-start">
+          <div className="content-start py-8">
             Your WILL will be executed in <span className="text-red-600">{props.requests.timeout} months</span>
           </div>
           <div className="flex items-center justify-center">
