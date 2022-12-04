@@ -140,6 +140,7 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
               name: "TrueResQ",
               dark: true,
             },
+            _sessionNamespace: "trueResQ",
           },
           loginSettings: {
             mfaLevel: "none",
@@ -158,7 +159,6 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
           const web3biconomy = new Web3(biconomy as any);
           console.log("biconomy web3 obj", web3biconomy);
           setWeb3biconomy(web3biconomy);
-          registerUser();
         }
       } catch (error) {
         console.log(error);
@@ -179,7 +179,6 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
     const localProvider = await web3Auth.connect();
     console.log("web3auth connected");
     setWalletProvider(localProvider);
-    registerUser();
   };
 
   const logout = async () => {
