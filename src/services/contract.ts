@@ -7,14 +7,14 @@ import { abi, byteCode } from "../contracts/walletAbi";
 import { setUserData } from "../utils/helpers";
 class WalletContract {
   private contract: Contract;
-
+  private web3: Web3;
   // 5. Create deploy function
   deploy = async (provider: SafeEventEmitterProvider, walletAddress: string) => {
-    const web3 = new Web3(provider as any);
+     this.web3 = new Web3(provider as any);
 
     // 6. Create contract instance
-    const walletContract = new web3.eth.Contract(abi as AbiItem[]);
-    const address = (await web3.eth.getAccounts())[0];
+    const walletContract = new this.web3.eth.Contract(abi as AbiItem[]);
+    const address = (await this.web3.eth.getAccounts())[0];
 
     // Deploy contract with "Hello World!" in the constructor and wait to finish
     const contractInstance = await walletContract
@@ -79,12 +79,14 @@ class WalletContract {
     return this.contract.methods.setupSocialRecovery(recoveryAccounts, guardians).send();
   };
 
-  getWillAccount = async (): Promise<string[]> => {
+  getWillAccount = async (): Promise<string> => {
     return this.contract.methods.willAccount().call();
   };
 
   updateWillAccount = async (willAccount: string): Promise<void> => {
-    return this.contract.methods.updateWillAccount(willAccount).send();
+    const address = (await this.web3.eth.getAccounts())[0];
+
+    return this.contract.methods.updateWillAccount(willAccount).send({ from: address });
   };
 
   sendEther = async (to: string, amount: string): Promise<void> => {

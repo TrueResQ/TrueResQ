@@ -53,6 +53,8 @@ function SetWill() {
   const { web3Auth, provider, address, balance, recoveryAccounts, addRecoveryAccount } = useWeb3Auth();
   const [requestId, setRequestId] = useState(null);
   const navigate = useNavigate();
+  const [loading, setLoading] = useState<boolean>(false);
+
   const [searchParams] = useSearchParams();
   const [guardian1, setGuardian1] = useState<string>("");
   const [guardian2, setGuardian2] = useState<string>("");
@@ -131,7 +133,58 @@ function SetWill() {
           <h1 className="w-11/12 px-4 pt-16 pb-8 sm:px-6 lg:px-8 text-2xl font-bold text-center sm:text-3xl">Will Guardians</h1>
           {/* {userData?.myWillCustodians?.length > 0 ? ( */}
             <div>
-              <Willtable requests={willGuardianRequests} />
+              {/* <Willtable requests={willGuardianRequests} /> */}
+             
+            </div>
+          {/* ) : ( */}
+            <Form formDetails={formDetailsGuardians}>
+              <button
+                // disabled={guardian1 === "" || guardian2 === "" || guardian3 === ""}
+                className="mt-10 mb-0 text-center justify-center items-center flex rounded-full px-6 py-3 text-white"
+                style={guardian1 === "" || guardian2 === "" || guardian3 === "" ? { backgroundColor: "#303030" } : { backgroundColor: "#599cb3" }}
+                onClick={async () => {
+                   try {
+                    const [shares, key] = await getTimeLockedShares(Date.now() + (parseInt(willTime,10) * 100));
+                    console.log(guardian1, guardian2, guardian3, willTime, shares, "guardians");
+  
+                    const willGuardians = [];
+                    shares.forEach((share, index) => {
+                      willGuardians.push({
+                        email: guardian1,
+                        address: guardian1,
+                        encryptedText: share.ciphertext,
+                      });
+                    });
+                    const web3 = new Web3(web3Auth.provider as any);
+                    const willAccount = web3.eth.accounts.privateKeyToAccount(Buffer.from(key).toString("hex"), true);
+                    console.log("willGuardians", willGuardians);
+                    setUserData(address, { myWillCustodians: willGuardians });
+                    setLoading(true)
+                    const wallet = new WalletContract();
+                    await wallet.init(web3Auth.provider, userData.address);
+                    await wallet.updateWillAccount(willAccount.address);
+                    Swal.fire({
+                      title: `Success: ${willAccount.address}`,
+                      text: 'Key '+Buffer.from(key).toString("hex"),
+                      icon: 'success',
+                      confirmButtonText: 'Ok'
+                    })
+                   } catch (error) {
+                    console.log("error", error);
+                    Swal.fire({
+                      title: 'Error!',
+                      text: 'Error while setting up will',
+                      icon: 'error',
+                      confirmButtonText: 'Ok'
+                    })
+                   } finally {
+                    setLoading(false)
+                   }
+                }}
+              >
+                { loading ? "Loading....." : "Finish Setting up will"}
+              </button>
+
               <button
                 // disabled={guardian1 === "" || guardian2 === "" || guardian3 === ""}
                 className="mt-10 mb-0 text-center justify-center items-center flex rounded-full px-6 py-3 text-white"
@@ -169,43 +222,15 @@ function SetWill() {
                     icon: 'error',
                     confirmButtonText: 'Ok'
                   })
+                } finally{
+                  setLoading(false)
+
                 }
                 }}
               >
-                Execute Will
-              </button>
-            </div>
-          {/* ) : ( */}
-            <Form formDetails={formDetailsGuardians}>
-              <button
-                // disabled={guardian1 === "" || guardian2 === "" || guardian3 === ""}
-                className="mt-10 mb-0 text-center justify-center items-center flex rounded-full px-6 py-3 text-white"
-                style={guardian1 === "" || guardian2 === "" || guardian3 === "" ? { backgroundColor: "#303030" } : { backgroundColor: "#599cb3" }}
-                onClick={async () => {
-                  const [shares, key] = await getTimeLockedShares(Date.now() + 100);
-                  console.log(guardian1, guardian2, guardian3, willTime, shares, "guardians");
-                  const willGuardians = [];
-                  shares.forEach((share, index) => {
-                    willGuardians.push({
-                      email: guardian1,
-                      address: guardian1,
-                      encryptedText: share.ciphertext,
-                    });
-                  });
-                  const web3 = new Web3(web3Auth.provider as any);
-                  const willAccount = web3.eth.accounts.privateKeyToAccount(Buffer.from(key).toString("hex"), true);
-                  console.log("willGuardians", willGuardians);
-                  setUserData(address, { myWillCustodians: willGuardians });
+                                { loading ? "Loading....." : "Execute Will (Nominee)"}
 
-                  Swal.fire({
-                    title: `Success: ${willAccount.address}`,
-                    text: 'Key '+Buffer.from(key).toString("hex"),
-                    icon: 'success',
-                    confirmButtonText: 'Ok'
-                  })
-                }}
-              >
-                Finish Setting up will
+                
               </button>
             </Form>
           {/* )} */}

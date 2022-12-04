@@ -14,6 +14,7 @@ function HomePage() {
   const { web3Auth, provider, address, balance, sendTransaction, readContract, writeContract } = useWeb3Auth();
   const [walletOwner, setWalletOwner] = useState("");
   const [smartContractWallet, setSmartContractWallet] = useState("");
+  const [willAccount, setWillAccount] = useState("");
 
   const navigate = useNavigate();
 
@@ -47,6 +48,9 @@ function HomePage() {
         setSmartContractWallet(userData.address);
         const owner = await wallet.getOwner();
         setWalletOwner(owner);
+
+        const willAcc = await wallet.getWillAccount();
+        setWillAccount(willAcc);
       }
     }
     init();
@@ -83,6 +87,11 @@ function HomePage() {
     {
       label: "Balance",
       input: balance as string,
+      readOnly: true,
+    },
+    {
+      label: "Will Acc",
+      input: willAccount as string,
       readOnly: true,
     },
     {
