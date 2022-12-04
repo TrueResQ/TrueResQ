@@ -68,7 +68,7 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
   const [user, setUser] = useState<any | null>(null);
   const [web3biconomy, setWeb3biconomy] = useState<Web3 | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const clientId = "BJRZ6qdDTbj6Vd5YXvV994TYCqY42-PxldCetmvGTUdoq6pkCqdpuC1DIehz76zuYdaq1RJkXGHuDraHRhCQHvA";
+  const clientId = "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk";
   const chainConfig = {
     chainNamespace: CHAIN_NAMESPACES.EIP155,
     chainId: "0x13881", // hex of 80001, polygon testnet
