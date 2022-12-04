@@ -10,9 +10,11 @@ const Sidebar = () => {
   function goToHome() {
     navigate("/");
   }
+  
   function goToSettings() {
     navigate("/settings");
   }
+  
   function goToGuardianRequests() {
     navigate("/guardianRequests");
   }
@@ -20,6 +22,7 @@ const Sidebar = () => {
   function setWill() {
     navigate("/setwill");
   }
+
   const location = useLocation();
   function linktoGo(label: string, path: any) {
     return (
@@ -31,6 +34,7 @@ const Sidebar = () => {
       </div>
     );
   }
+  
   function activePage(label: string) {
     return (
       <div className="flex items-center px-4 py-2 mb-2 rounded-lg bg-background-secondary text-primary  cursor-pointer">
@@ -38,6 +42,7 @@ const Sidebar = () => {
       </div>
     );
   }
+  
   function userProfile() {
     if (provider) {
       try {
