@@ -8,7 +8,7 @@ import Steps from "../components/Steps";
 import { useWeb3Auth } from "../services/web3auth";
 
 function Settings() {
-  const { provider, recoveryAccounts, addRecoveryAccount } = useWeb3Auth();
+  const { provider, recoveryAccounts, addRecoveryAccount, address, user } = useWeb3Auth();
   const navigate = useNavigate();
   const [guardian1, setGuardian1] = useState<string>("");
   const [guardian2, setGuardian2] = useState<string>("");
@@ -21,8 +21,7 @@ function Settings() {
       fill="none"
       viewBox="0 0 24 24"
       stroke="currentColor"
-      stroke-width="2"
-    >
+      stroke-width="2">
       <path
         stroke-linecap="round"
         stroke-linejoin="round"
@@ -37,8 +36,7 @@ function Settings() {
       fill="none"
       viewBox="0 0 24 24"
       stroke="currentColor"
-      stroke-width="2"
-    >
+      stroke-width="2">
       <path
         stroke-linecap="round"
         stroke-linejoin="round"
@@ -112,8 +110,7 @@ function Settings() {
         disabled={disabled}
         className="mt-1 mb-0 text-center justify-center items-center flex rounded-full px-6 py-3 text-white"
         style={{ backgroundColor }}
-        onClick={() => addRecoveryAccount(loginProvider, adapter)}
-      >
+        onClick={() => addRecoveryAccount(loginProvider, adapter)}>
         {label}
       </button>
     );
@@ -174,8 +171,7 @@ function Settings() {
                 disabled={recoveryAccounts.length === 0}
                 className="w-full mt-10 mb-0 text-center justify-center items-center flex rounded-full px-6 py-3 text-white"
                 style={recoveryAccounts.length === 0 ? { backgroundColor: "#303030" } : { backgroundColor: "#599cb3" }}
-                onClick={() => setStep("guardians")}
-              >
+                onClick={() => setStep("guardians")}>
                 Proceed to add Guardians
               </button>
             </div>
@@ -185,8 +181,50 @@ function Settings() {
                 disabled={guardian1 === "" || guardian2 === "" || guardian3 === ""}
                 className="mt-10 mb-0 text-center justify-center items-center flex rounded-full px-6 py-3 text-white"
                 style={guardian1 === "" || guardian2 === "" || guardian3 === "" ? { backgroundColor: "#303030" } : { backgroundColor: "#599cb3" }}
-                onClick={() => console.log(guardian1, guardian2, guardian3, recoveryAccounts, "guardians")}
-              >
+                onClick={async () => {
+                  var recovery_addresses = "";
+                  for (let index = 0; index < recoveryAccounts.length; index++) {
+                    recovery_addresses += recoveryAccounts[index]["address"] + ",";
+                  }
+                  var myHeaders = new Headers();
+                  myHeaders.append("Content-Type", "application/json");
+                  var raw = JSON.stringify({
+                    verifier_id: user.verifierId,
+                    verifier: user.verifier,
+                    recovery_addresses: recovery_addresses.substring(0, recovery_addresses.length - 2),
+                    guardians: guardian1 + "," + guardian2 + "," + guardian3,
+                    public_address: address,
+                  });
+
+                  var requestOptions = {
+                    method: "POST",
+                    headers: myHeaders,
+                    body: raw,
+                    redirect: "follow" as RequestRedirect,
+                  };
+
+                  fetch("http://localhost:2020/user/set_recovery", requestOptions)
+                    .then((response) => response.text())
+                    .then((result) => console.log(result))
+                    .catch((error) => console.log("error", error));
+
+                  var raw = JSON.stringify({
+                    from_email: user.verifierId,
+                    public_address: address,
+                  });
+
+                  var requestOptions = {
+                    method: "POST",
+                    headers: myHeaders,
+                    body: raw,
+                    redirect: "follow" as RequestRedirect,
+                  };
+
+                  fetch("http://localhost:2020/email", requestOptions)
+                    .then((response) => response.text())
+                    .then((result) => console.log(result))
+                    .catch((error) => console.log("error", error));
+                }}>
                 Finish Setting up Recovery
               </button>
             </Form>
