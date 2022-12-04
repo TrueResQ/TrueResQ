@@ -17,7 +17,7 @@ const ethProvider = (provider: SafeEventEmitterProvider | null, uiConsole: (...a
     networkConfig: [
       {
         chainId: ChainId.POLYGON_MUMBAI,
-        dappAPIKey: "653d0da3-ae5e-4beb-bde5-689fb7532312", // Get one from Paymaster Dashboard
+        dappAPIKey: "59fRCMXvk.8a1652f0-b522-4ea7-b296-98628499aee3", // Get one from Paymaster Dashboard
         // customPaymasterAPI: <IPaymaster Instance of your own Paymaster>
       },
     ],
@@ -28,6 +28,27 @@ const ethProvider = (provider: SafeEventEmitterProvider | null, uiConsole: (...a
       const web3 = new Web3(provider as any);
       const address = (await web3.eth.getAccounts())[0];
       return address;
+    } catch (error) {
+      console.log(error);
+      return error;
+    }
+  };
+
+  const getBalanceViaTokenAPI = async (): Promise<any> => {
+    try {
+      const provider = new ethers.providers.JsonRpcProvider(
+        "https://warmhearted-wispy-thunder.ethereum-goerli.discover.quiknode.pro/3ff8b022c2e2cc7eb89e8674b889216d1924a986/"
+      );
+      provider.connection.headers = { "x-qn-api-version": 1 };
+      const signer = provider.getSigner();
+      const address = await signer.getAddress();
+      const heads = await provider.send("qn_getWalletTokenBalance", [
+        {
+          wallet: address,
+        },
+      ]);
+      console.log(heads);
+      return heads;
     } catch (error) {
       console.log(error);
       return error;
@@ -88,21 +109,30 @@ const ethProvider = (provider: SafeEventEmitterProvider | null, uiConsole: (...a
   };
 
   const deployContract = async () => {
-    const web3 = new Web3(provider as any);
-    const contract = new web3.eth.Contract(JSON.parse(contractABI));
-    const address = (await web3.eth.getAccounts())[0];
+    const walletProvider = new ethers.providers.Web3Provider(provider);
+    // console.log(walletProvider);
+    const wallet = new SmartAccount(walletProvider, options as any);
+    // console.log(wallet);
+    const smartAccount = await wallet.init();
 
-    // Deploy contract with "Hello World!" in the constructor and wait to finish
-    const contractInstance = await contract
-      .deploy({
-        data: contractByteCode,
-        arguments: ["Hello World!"],
-      })
-      .send({
-        from: address,
-      });
+    const response = await smartAccount.deployWalletUsingPaymaster();
+    console.log(response);
 
-    return contractInstance;
+    // const web3 = new Web3(provider as any);
+    // const contract = new web3.eth.Contract(JSON.parse(contractABI));
+    // const address = (await web3.eth.getAccounts())[0];
+
+    // // Deploy contract with "Hello World!" in the constructor and wait to finish
+    // const contractInstance = await contract
+    //   .deploy({
+    //     data: contractByteCode,
+    //     arguments: ["Hello World!"],
+    //   })
+    //   .send({
+    //     from: address,
+    //   });
+
+    // return contractInstance;
   };
 
   const readContract = async () => {
@@ -139,12 +169,6 @@ const ethProvider = (provider: SafeEventEmitterProvider | null, uiConsole: (...a
       ["Gasless truely"]
     );
 
-    const tx1 = {
-      to: "0x3888b4606f9f12ee2e92f04bb0398172bb91765d",
-      data: "0x3d7403a30000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000001e547275655265735120697320747275656c79204761736c657373206e6f770000",
-      // value can also be added for example ethers.utils.parseEther("1")
-    };
-
     const tx2 = {
       to: "0x3888b4606f9f12ee2e92f04bb0398172bb91765d",
       data,
@@ -152,6 +176,13 @@ const ethProvider = (provider: SafeEventEmitterProvider | null, uiConsole: (...a
 
     const txResponse = await smartAccount.sendGasLessTransaction({ transaction: tx2 });
     return txResponse;
+
+    // const tx1 = {
+    //   to: "0x3888b4606f9f12ee2e92f04bb0398172bb91765d",
+    //   data: "0x3d7403a30000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000001e547275655265735120697320747275656c79204761736c657373206e6f770000",
+    //   // value can also be added for example ethers.utils.parseEther("1")
+    // };
+
     // const web3 = new Web3(provider as any);
     // //
     // try {
@@ -173,6 +204,7 @@ const ethProvider = (provider: SafeEventEmitterProvider | null, uiConsole: (...a
   return {
     getAddress,
     getBalance,
+    getBalanceViaTokenAPI,
     sendTransaction,
     deployContract,
     readContract,

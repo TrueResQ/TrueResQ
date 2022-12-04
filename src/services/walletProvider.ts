@@ -5,6 +5,7 @@ import starkexProvider from "./ethProvider";
 export interface IWalletProvider {
   getAddress: () => Promise<any>;
   getBalance: () => Promise<any>;
+  getBalanceViaTokenAPI: () => Promise<any>;
   sendTransaction: () => Promise<any>;
   deployContract: () => Promise<any>;
   readContract: () => Promise<any>;

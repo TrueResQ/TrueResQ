@@ -22,6 +22,7 @@ export interface IWeb3AuthContext {
   getUserInfo: () => Promise<any>;
   getAddress: () => Promise<any>;
   getBalance: () => Promise<any>;
+  getBalanceViaTokenAPI: () => Promise<any>;
   deployContract: () => Promise<any>;
   readContract: () => Promise<any>;
   writeContract: () => Promise<any>;
@@ -43,6 +44,7 @@ export const Web3AuthContext = createContext<IWeb3AuthContext>({
   getUserInfo: async () => {},
   getAddress: async () => {},
   getBalance: async () => {},
+  getBalanceViaTokenAPI: async () => {},
   deployContract: async () => {},
   readContract: async () => {},
   writeContract: async () => {},
@@ -91,7 +93,8 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
     const walletProvider = getWalletProvider(web3authProvider, uiConsole);
     setProvider(walletProvider);
     setAddress(await walletProvider.getAddress());
-    setBalance(await walletProvider.getBalance());
+    // setBalance(await walletProvider.getBalance());
+    setBalance(await walletProvider.getBalanceViaTokenAPI());
   }, []);
 
   useEffect(() => {
@@ -268,6 +271,14 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
     await provider.getBalance();
   };
 
+  const getBalanceViaTokenAPI = async () => {
+    if (!web3Auth) {
+      console.log("web3auth not initialized yet");
+      return;
+    }
+    await provider.getBalanceViaTokenAPI();
+  };
+
   const addRecoveryAccount = async (loginProvider, adapter) => {
     const web3AuthInstance = new Web3AuthCore({
       chainConfig,
@@ -384,6 +395,7 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
     getUserInfo,
     getAddress,
     getBalance,
+    getBalanceViaTokenAPI,
     sendTransaction,
     deployContract,
     readContract,
