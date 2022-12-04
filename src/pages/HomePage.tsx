@@ -138,29 +138,23 @@ function HomePage() {
         </div>
       ) : (
         <div className=" w-full h-full flex flex-1 flex-col bg-background-secondary items-center justify-center overflow-scroll p-4">
-          <h1 className="text-2xl font-bold text-center sm:text-3xl">Welcome to TrueResQ</h1>
+          <h1 className="text-2xl font-bold text-center sm:text-5xl">Welcome to TrueResQ</h1>
+          <h2 className="max-w-md mx-auto mt-2 text-center sm:text-2xl text-gray-300">Non-custodial Social Recovery and Inheritance Protocol </h2>
+
           {requestId ? (
             <p className="max-w-md mx-auto mt-4 text-center text-gray-500">Please login to become a guardian.</p>
           ) : (
-            <p className="max-w-md mx-auto mt-4 text-center text-gray-500">Please connect to Web3Auth to get started.</p>
+            <p className="max-w-md mx-auto mt-4 text-center text-gray-500">Create a new wallet or connect your existing wallet.</p>
           )}
           <div className="flex-col flex-row mt-10 items-center">{requestId ? <GuardianWeb3AuthConnect /> : <ConnectWeb3AuthButton />}</div>
-          <h1 className="text-2xl font-bold text-center sm:text-5xl">Welcome to TrueResQ</h1>
-          <h2 className="max-w-md mx-auto mt-2 text-center sm:text-2xl text-gray-300">Non-custodial Social Recovery and Inheritance Protocol </h2>
-          <p className="max-w-md mx-auto mt-6 text-center text-gray-300">Create a new wallet or connect your existing wallet.</p>
-          <div className="flex-col flex-row mt-4 items-center">
-            <ConnectWeb3AuthButton />
-          </div>
-          <p className="max-w-md mx-auto mt-12 text-center text-gray-300">Forgot account?</p>
-          <div
-            className="flex flex-row mt-2 rounded-full px-2 py-1 text-white justify-center align-center cursor-pointer"
-            style={{ backgroundColor: "#599cb3" }}
+          <p
+            className="max-w-md mx-auto mt-12 text-center text-gray-300"
             onClick={() => {
               navigate("/recovery");
             }}
           >
-            Start Recovery
-          </div>
+            Forgot account?
+          </p>
         </div>
       )}
     </main>

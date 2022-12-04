@@ -6,7 +6,6 @@ import { MetamaskAdapter } from "@web3auth/metamask-adapter";
 import { Web3Auth } from "@web3auth/modal";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import { createContext, ReactNode, useCallback, useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import Web3 from "web3";
 
 import { getWalletProvider, IWalletProvider } from "./walletProvider";
@@ -73,14 +72,12 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
   const clientId = "BJRZ6qdDTbj6Vd5YXvV994TYCqY42-PxldCetmvGTUdoq6pkCqdpuC1DIehz76zuYdaq1RJkXGHuDraHRhCQHvA";
   const chainConfig = {
     chainNamespace: CHAIN_NAMESPACES.EIP155,
-    chainId: "0x13881", // hex of 80001, polygon testnet
-    rpcTarget: "https://rpc.ankr.com/polygon_mumbai",
-    // Avoid using public rpcTarget in production.
-    // Use services like Infura, Quicknode etc
-    displayName: "Polygon Mainnet",
-    blockExplorer: "https://mumbai.polygonscan.com/",
-    ticker: "MATIC",
-    tickerName: "Matic",
+    chainId: "0x5",
+    rpcTarget: "https://warmhearted-wispy-thunder.ethereum-goerli.discover.quiknode.pro/3ff8b022c2e2cc7eb89e8674b889216d1924a986/",
+    displayName: "Ethereum Goerli Testnet",
+    blockExplorer: "https://etherscan.io/",
+    ticker: "ETH",
+    tickerName: "Eth",
   };
   const uiConsole = (...args: unknown[]): void => {
     const el = document.querySelector("#console");
@@ -92,7 +89,8 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
   const setWalletProvider = useCallback(async (web3authProvider: SafeEventEmitterProvider | null) => {
     const walletProvider = getWalletProvider(web3authProvider, uiConsole);
     setProvider(walletProvider);
-    setAddress(await walletProvider.getAddress());
+    const add = await walletProvider.getAddress();
+    setAddress(add);
     setBalance(await walletProvider.getBalance());
   }, []);
 
@@ -102,9 +100,11 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
       web3auth.on(ADAPTER_EVENTS.CONNECTED, async (data: any) => {
         console.log("Yeah!, you are successfully logged in", data);
         setWalletProvider(web3auth.provider!);
-        const userDetails = await web3auth.getUserInfo();
-        registerUser();
-        setUser(userDetails);
+        data = await web3auth.getUserInfo();
+        const walletProvider = getWalletProvider(web3auth.provider, uiConsole);
+        const add = await walletProvider.getAddress();
+        setUser(data);
+        registerUser(data, add);
       });
 
       web3auth.on(ADAPTER_EVENTS.CONNECTING, () => {
@@ -127,7 +127,6 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
         const web3AuthInstance = new Web3Auth({
           chainConfig,
           clientId,
-          storageKey: "local",
           uiConfig: {
             theme: "dark",
           },
@@ -159,6 +158,7 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
           const web3biconomy = new Web3(biconomy as any);
           console.log("biconomy web3 obj", web3biconomy);
           setWeb3biconomy(web3biconomy);
+          setAddress(await provider.getAddress());
         }
       } catch (error) {
         console.log(error);
@@ -171,7 +171,6 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
 
   const login = async () => {
     if (!web3Auth) {
-      console.log("web3auth not initialized yet");
       console.log("web3auth not initialized yet");
       return;
     }
@@ -206,23 +205,18 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
       console.log("provider not initialized yet");
       return;
     }
-    const add = await provider.getAddress();
-    return add;
+    await provider.getAddress();
   };
 
-  const registerUser = async () => {
+  const registerUser = async (data, public_address) => {
     if (!web3Auth) {
       console.log("web3auth not initialized yet");
     }
-    if (!provider) {
-      console.log("provider not initialized yet");
-    }
-    const userDetails = await web3Auth.getUserInfo();
-    const public_address = await provider.getAddress();
+    console.log(public_address, data);
     const raw = JSON.stringify({
       public_address,
-      verifier_id: (userDetails as any)?.verifierId,
-      verifier: (userDetails as any)?.typeOfLogin,
+      verifier_id: data.verifierId,
+      verifier: data.typeOfLogin,
     });
 
     const requestOptions = {
