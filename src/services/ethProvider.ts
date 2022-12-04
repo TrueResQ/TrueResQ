@@ -36,19 +36,25 @@ const ethProvider = (provider: SafeEventEmitterProvider | null, uiConsole: (...a
 
   const getBalanceViaTokenAPI = async (): Promise<any> => {
     try {
-      const provider = new ethers.providers.JsonRpcProvider(
-        "https://warmhearted-wispy-thunder.ethereum-goerli.discover.quiknode.pro/3ff8b022c2e2cc7eb89e8674b889216d1924a986/"
+      const privateKey = await provider.request({
+        method: "eth_private_key",
+      });
+      const ethersProvider = new ethers.providers.StaticJsonRpcProvider(
+        "https://fabled-radial-butterfly.discover.quiknode.pro/b18a0594a01d0135b15f5bceb776e6f3f2923c1d/"
       );
-      provider.connection.headers = { "x-qn-api-version": 1 };
-      const signer = provider.getSigner();
-      const address = await signer.getAddress();
-      const heads = await provider.send("qn_getWalletTokenBalance", [
-        {
-          wallet: address,
-        },
-      ]);
-      console.log(heads);
-      return heads;
+      // provider.connection.headers = { "x-qn-api-version": 1 };
+      const wallet = new ethers.Wallet(privateKey as any);
+      const address = await wallet.address;
+      const heads = await ethersProvider.send("qn_getWalletTokenBalance", {
+        // @ts-ignore
+        wallet: address,
+      });
+      // const heads = await provider.getBlockNumber();
+      console.log(heads.assets);
+      if (heads.assets.length === 0) {
+        return "0";
+      }
+      return JSON.stringify(heads.assets);
     } catch (error) {
       console.log(error);
       return error;
