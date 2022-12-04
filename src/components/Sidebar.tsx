@@ -16,9 +16,7 @@ const Sidebar = () => {
   function goToGuardianRequests() {
     navigate("/guardianRequests");
   }
-  function goToRecovery() {
-    navigate("/recovery");
-  }
+
   function setWill() {
     navigate("/setwill");
   }
@@ -73,9 +71,6 @@ const Sidebar = () => {
           {location.pathname === "/" ? activePage("Account Details") : linktoGo("Account Details", goToHome)}
           {location.pathname === "/settings" ? activePage("Settings") : linktoGo("Settings", goToSettings)}
           {location.pathname === "/guardianRequests" ? activePage("Guardian Requests") : linktoGo("Recovery Requests", goToGuardianRequests)}
-          {location.pathname === "/recovery" ? activePage("Recovery") : linktoGo("Recovery", goToRecovery)}
-          {location.pathname === "/setwill" ? activePage("Set Your Will") : linktoGo("Set Your Will", setWill)}
-          {location.pathname === "/guardianRequests" ? activePage("Guardian Requests") : linktoGo("Guardian Requests", goToGuardianRequests)}
           {location.pathname === "/setwill" ? activePage("Set Your Will") : linktoGo("Set Your Will", setWill)}
         </nav>
       </div>
