@@ -10,11 +10,17 @@ const Sidebar = () => {
   function goToHome() {
     navigate("/");
   }
+
   function goToSettings() {
     navigate("/settings");
   }
+
   function goToGuardianRequests() {
     navigate("/guardianRequests");
+  }
+
+  function setWill() {
+    navigate("/setwill");
   }
 
   const location = useLocation();
@@ -28,6 +34,7 @@ const Sidebar = () => {
       </div>
     );
   }
+
   function activePage(label: string) {
     return (
       <div className="flex items-center px-4 py-2 mb-2 rounded-lg bg-background-secondary text-primary  cursor-pointer">
@@ -35,6 +42,7 @@ const Sidebar = () => {
       </div>
     );
   }
+
   function userProfile() {
     if (provider) {
       try {
@@ -67,7 +75,8 @@ const Sidebar = () => {
         <nav className="flex flex-col mt-6">
           {location.pathname === "/" ? activePage("Account Details") : linktoGo("Account Details", goToHome)}
           {location.pathname === "/settings" ? activePage("Settings") : linktoGo("Settings", goToSettings)}
-          {location.pathname === "/guardianRequests" ? activePage("Guardian Requests") : linktoGo("Guardian Requests", goToGuardianRequests)}
+          {location.pathname === "/guardianRequests" ? activePage("Guardian Requests") : linktoGo("Recovery Requests", goToGuardianRequests)}
+          {location.pathname === "/setwill" ? activePage("Set Your Will") : linktoGo("Set Your Will", setWill)}
         </nav>
       </div>
       {userProfile()}
