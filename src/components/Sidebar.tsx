@@ -20,7 +20,7 @@ const Sidebar = () => {
     navigate("/recovery");
   }
   function setWill() {
-    navigate("/recovery");
+    navigate("/setwill");
   }
   const location = useLocation();
   function linktoGo(label: string, path: any) {
