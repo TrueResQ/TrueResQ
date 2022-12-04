@@ -9,7 +9,7 @@ import Form from "../components/Form";
 import Table from "../components/GuardianRequestsTable";
 import Header from "../components/Header";
 import RecoveryGuardians from "../components/RecoveryGuardians";
-import Sidebar from "../components/Sidebar";
+// import Sidebar from "../components/Sidebar";
 import Tabs from "../components/Tabs";
 import { useWeb3Auth } from "../services/web3auth";
 

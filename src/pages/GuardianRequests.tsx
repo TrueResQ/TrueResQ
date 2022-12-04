@@ -106,7 +106,6 @@ function GuardianRequests() {
       <Header />
       <div className="flex flex-1 overflow-hidden">
         <Sidebar />
-
         <div className=" w-full h-full flex flex-1 flex-col bg-background-secondary items-center justify-flex-start overflow-scroll">
           <h1 className="w-11/12 px-4 pt-16 pb-8 sm:px-6 lg:px-8 text-2xl font-bold text-center sm:text-3xl">Guardian Requests</h1>
           {requestId ? (
