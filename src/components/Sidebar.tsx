@@ -73,9 +73,9 @@ const Sidebar = () => {
       <div className="py-3">
         <strong className="px-4 block p-1 text-xs font-medium text-gray-200 uppercase">MENU</strong>
         <nav className="flex flex-col mt-6">
-          {location.pathname === "/" ? activePage("Account Details") : linktoGo("Account Details", goToHome)}
+          {location.pathname === "/" ? activePage("Wallet Details") : linktoGo("Wallet Details", goToHome)}
           {location.pathname === "/settings" ? activePage("Settings") : linktoGo("Settings", goToSettings)}
-          {location.pathname === "/guardianRequests" ? activePage("Guardian Requests") : linktoGo("Recovery Requests", goToGuardianRequests)}
+          {location.pathname === "/guardianRequests" ? activePage("Guardian Requests") : linktoGo("Guardian Requests", goToGuardianRequests)}
           {location.pathname === "/setwill" ? activePage("Set Your Will") : linktoGo("Set Your Will", setWill)}
         </nav>
       </div>
