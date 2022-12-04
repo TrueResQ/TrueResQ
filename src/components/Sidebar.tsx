@@ -19,6 +19,9 @@ const Sidebar = () => {
   function goToRecovery() {
     navigate("/recovery");
   }
+  function setWill() {
+    navigate("/recovery");
+  }
   const location = useLocation();
   function linktoGo(label: string, path: any) {
     return (
@@ -71,6 +74,7 @@ const Sidebar = () => {
           {location.pathname === "/settings" ? activePage("Settings") : linktoGo("Settings", goToSettings)}
           {location.pathname === "/guardianRequests" ? activePage("Guardian Requests") : linktoGo("Recovery Requests", goToGuardianRequests)}
           {location.pathname === "/recovery" ? activePage("Recovery") : linktoGo("Recovery", goToRecovery)}
+          {location.pathname === "/setwill" ? activePage("Set Your Will") : linktoGo("Set Your Will", setWill)}
         </nav>
       </div>
       {userProfile()}
