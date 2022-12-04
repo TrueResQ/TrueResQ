@@ -5,7 +5,6 @@ import { MetamaskAdapter } from "@web3auth/metamask-adapter";
 import { Web3Auth } from "@web3auth/modal";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import { createContext, ReactNode, useCallback, useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import Web3 from "web3";
 
 import { getWalletProvider, IWalletProvider } from "./walletProvider";
@@ -74,8 +73,6 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
     chainNamespace: CHAIN_NAMESPACES.EIP155,
     chainId: "0x13881", // hex of 80001, polygon testnet
     rpcTarget: "https://rpc.ankr.com/polygon_mumbai",
-    // Avoid using public rpcTarget in production.
-    // Use services like Infura, Quicknode etc
     displayName: "Polygon Mainnet",
     blockExplorer: "https://mumbai.polygonscan.com/",
     ticker: "MATIC",
@@ -91,7 +88,8 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
   const setWalletProvider = useCallback(async (web3authProvider: SafeEventEmitterProvider | null) => {
     const walletProvider = getWalletProvider(web3authProvider, uiConsole);
     setProvider(walletProvider);
-    setAddress(await walletProvider.getAddress());
+    const add = await walletProvider.getAddress();
+    setAddress(add);
     setBalance(await walletProvider.getBalance());
   }, []);
 
@@ -101,27 +99,11 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
       web3auth.on(ADAPTER_EVENTS.CONNECTED, async (data: any) => {
         console.log("Yeah!, you are successfully logged in", data);
         setWalletProvider(web3auth.provider!);
-        const userDetails = await web3auth.getUserInfo();
-        setUser(userDetails);
-        const myHeaders = new Headers();
-        myHeaders.append("Content-Type", "application/json");
-        const raw = JSON.stringify({
-          public_address: (userDetails as any)?.address,
-          verifier_id: (userDetails as any)?.verifierId,
-          verifier: (userDetails as any)?.verifier,
-        });
-        const requestOptions = {
-          method: "POST",
-          headers: myHeaders,
-          body: raw,
-          mode: "cors" as RequestMode,
-          redirect: "follow" as RequestRedirect,
-        };
-
-        fetch("http://localhost:2020/user", requestOptions)
-          .then((response) => response.text())
-          .then((result) => console.log(result))
-          .catch((error) => console.log("error", error));
+        data = await web3auth.getUserInfo();
+        const walletProvider = getWalletProvider(web3auth.provider, uiConsole);
+        const add = await walletProvider.getAddress();
+        setUser(data);
+        registerUser(data, add);
       });
 
       web3auth.on(ADAPTER_EVENTS.CONNECTING, () => {
@@ -144,7 +126,6 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
         const web3AuthInstance = new Web3Auth({
           chainConfig,
           clientId,
-          storageKey: "local",
           uiConfig: {
             theme: "dark",
           },
@@ -175,6 +156,7 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
           const web3biconomy = new Web3(biconomy as any);
           console.log("biconomy web3 obj", web3biconomy);
           setWeb3biconomy(web3biconomy);
+          setAddress(await provider.getAddress());
         }
       } catch (error) {
         console.log(error);
@@ -187,7 +169,6 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
 
   const login = async () => {
     if (!web3Auth) {
-      console.log("web3auth not initialized yet");
       console.log("web3auth not initialized yet");
       return;
     }
@@ -223,6 +204,29 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
       return;
     }
     await provider.getAddress();
+  };
+
+  const registerUser = async (data, public_address) => {
+    if (!web3Auth) {
+      console.log("web3auth not initialized yet");
+    }
+    console.log(public_address, data);
+    const raw = JSON.stringify({
+      public_address,
+      verifier_id: data.verifierId,
+      verifier: data.typeOfLogin,
+    });
+
+    const requestOptions = {
+      method: "POST",
+      headers: new Headers({ "content-type": "application/json" }),
+      body: raw,
+      redirect: "follow" as RequestRedirect,
+    };
+    fetch("http://9f97-115-110-225-194.ngrok.io/user", requestOptions)
+      .then((response) => response.json())
+      .then((result) => console.log(result))
+      .catch((error) => console.log("error", error));
   };
 
   const sendTransaction = async () => {
