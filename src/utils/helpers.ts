@@ -58,16 +58,24 @@ export function queryToJson(url: string): Record<string, string> {
   return jsonParams;
 }
 
-export const getUserData = (walletAddress: string): Record<string, string> => {
-  const userData = localStorage.getItem(walletAddress) || "{}";
-  const parsedData = JSON.parse(userData);
-  return parsedData;
+const _userData = {
+  address: "",
+  willTime: 0,
+  myWillCustodians: [{ address: "", email: "", encryptedShare: "" }],
+  willsUnderMe: [{ executioner: "", email: "" }],
 };
 
-export const setUserData = (walletAddress: string, _data: Record<string, string>) => {
+export const getUserData = (walletAddress: string): Record<string, any> => {
+  const userData = localStorage.getItem(walletAddress) || "{}";
+  const parsedData = JSON.parse(userData);
+  return { ..._userData, ...parsedData };
+};
+
+export const setUserData = (walletAddress: string, _data: any) => {
   const userData = localStorage.getItem(walletAddress) || "{}";
   const parsedData = JSON.parse(userData);
   const data = {
+    ..._userData,
     ...parsedData,
     ..._data,
   };

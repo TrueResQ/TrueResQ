@@ -7,22 +7,18 @@ const getPrivateKey = () => {
   return generatePrivate();
 };
 
-const getPublicKey = (privateKey) => {
-  return getPublic(privateKey);
-};
-
 const getTimeLockedShares = (decryptionTime: number) => {
   const privateKey = getPrivateKey();
-  const publicKey = getPublicKey(privateKey);
-  const secret = Buffer.from(privateKey);
-  const shares = sss.split(secret, { shares: 10, threshold: 4 });
-  const recovered = sss.combine(shares.slice(3, 7));
-  console.log(recovered.toString()); // 'secret key'
+  console.log("originla", Buffer.from(privateKey).toString("hex"));
+  const shares = sss.split(privateKey, { shares: 3, threshold: 2 });
+  const recovered = sss.combine(shares.slice(0, 2));
+  console.log(Buffer.from(privateKey).toString("hex")); // 'secret key'
   const encryptedShares = shares.map((share) => {
-    const encShare = encryptedOrDecryptedFormData({ plainText: share, decryptionTime });
+    console.log("raw share", share.toString("hex"));
+    const encShare = encryptedOrDecryptedFormData({ plainText: share.toString("hex"), decryptionTime });
     return encShare;
   });
-  return encryptedShares;
+  return Promise.all(encryptedShares);
 };
 
 export { getTimeLockedShares };

@@ -21,6 +21,7 @@ const Sidebar = () => {
 
   function goToRecoveryRequests() {
     navigate("/recoveryRequests");
+  }
   function setWill() {
     navigate("/setwill");
   }
@@ -86,4 +87,5 @@ const Sidebar = () => {
     </div>
   );
 };
+
 export default Sidebar;

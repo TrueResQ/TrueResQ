@@ -41,7 +41,7 @@ const Willtable = (props: WillGuardianProps) => {
           <div className="content-start py-8">
             Your WILL will be executed in <span className="text-red-600">{props.requests.timeout} months</span>
           </div>
-          <div className="flex items-center justify-center">
+          {/* <div className="flex items-center justify-center">
             <div className="relative form-floating mb-3 xl:w-96" data-mdb-toggle-button="false">
               <input
                 type="date"
@@ -52,7 +52,7 @@ const Willtable = (props: WillGuardianProps) => {
           </div>
           <button className="flex flex-row rounded-full px-6 py-3 text-white cursor-pointer" style={{ backgroundColor: "#599cb3" }}>
             Set a new time
-          </button>
+          </button> */}
         </>
       ) : (
         <>
