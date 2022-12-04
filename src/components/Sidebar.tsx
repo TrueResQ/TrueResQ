@@ -75,7 +75,7 @@ const Sidebar = () => {
         <nav className="flex flex-col mt-6">
           {location.pathname === "/" ? activePage("Account Details") : linktoGo("Account Details", goToHome)}
           {location.pathname === "/settings" ? activePage("Settings") : linktoGo("Settings", goToSettings)}
-          {location.pathname === "/guardianRequests" ? activePage("Guardian Requests") : linktoGo("Recovery Requests", goToGuardianRequests)}
+          {location.pathname === "/guardianRequests" ? activePage("Guardian Requests") : linktoGo("Guardian Requests", goToGuardianRequests)}
           {location.pathname === "/setwill" ? activePage("Set Your Will") : linktoGo("Set Your Will", setWill)}
         </nav>
       </div>
