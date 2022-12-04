@@ -116,12 +116,28 @@ const ethProvider = (provider: SafeEventEmitterProvider | null, uiConsole: (...a
 
   const writeContract = async () => {
     const walletProvider = new ethers.providers.Web3Provider(provider);
+    // console.log(walletProvider);
     const wallet = new SmartAccount(walletProvider, options as any);
-    console.log(wallet);
+    // console.log(wallet);
     const smartAccount = await wallet.init();
-    console.log("smartAccount", smartAccount);
+    // console.log("smartAccount", smartAccount);
     const { address } = smartAccount;
-    console.log("address", address);
+    // console.log("address", address);
+
+    const web3 = new Web3(provider as any);
+    const data = web3.eth.abi.encodeFunctionCall(
+      {
+        name: "update",
+        type: "function",
+        inputs: [
+          {
+            type: "string",
+            name: "message",
+          },
+        ],
+      },
+      ["Gasless truely"]
+    );
 
     const tx1 = {
       to: "0x3888b4606f9f12ee2e92f04bb0398172bb91765d",
@@ -129,7 +145,12 @@ const ethProvider = (provider: SafeEventEmitterProvider | null, uiConsole: (...a
       // value can also be added for example ethers.utils.parseEther("1")
     };
 
-    const txResponse = await smartAccount.sendGasLessTransaction({ transaction: tx1 });
+    const tx2 = {
+      to: "0x3888b4606f9f12ee2e92f04bb0398172bb91765d",
+      data,
+    };
+
+    const txResponse = await smartAccount.sendGasLessTransaction({ transaction: tx2 });
     return txResponse;
     // const web3 = new Web3(provider as any);
     // //

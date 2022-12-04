@@ -255,7 +255,7 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
       console.log("web3auth not initialized yet");
       return;
     }
-    console.log(web3biconomy);
+    // console.log(web3biconomy);
     const result = await provider.writeContract();
     console.log(result);
   };
