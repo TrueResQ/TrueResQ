@@ -368,7 +368,6 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
     } else {
       verifierId = "metamask";
     }
-    window.location.href = "/recovery";
     return address;
   };
 

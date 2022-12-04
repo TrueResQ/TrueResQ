@@ -64,7 +64,7 @@ function HomePage() {
             className="flex-col flex-row mt-10 items-center"
             style={{ cursor: "pointer" }}
             onClick={() => {
-              navigate("/recoveryLogin");
+              navigate("/recovery");
             }}
           >
             Forgot account?
