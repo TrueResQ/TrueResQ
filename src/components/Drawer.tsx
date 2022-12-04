@@ -18,6 +18,12 @@ const Drawer = ({ isOpen, setOpen }: DrawerProps) => {
   function goToRecoveryRequests() {
     navigate("/recoveryRequests");
   }
+  function setWill() {
+    navigate("/setwill");
+  }
+  function getWill() {
+    navigate("/getwill");
+  }
   const location = useLocation();
   function linktoGo(label: string, path: any) {
     return (
@@ -72,6 +78,8 @@ const Drawer = ({ isOpen, setOpen }: DrawerProps) => {
               {location.pathname === "/" ? activePage("Wallet Details") : linktoGo("Wallet Details", goToHome)}
               {location.pathname === "/settings" ? activePage("Settings") : linktoGo("Settings", goToSettings)}
               {location.pathname === "/recoveryRequests" ? activePage("Guardian Requests") : linktoGo("Guardian Requests", goToRecoveryRequests)}
+              {location.pathname === "/setwill" ? activePage("Set Your Will") : linktoGo("Set Your Will", setWill)}
+              {location.pathname === "/getwill" ? activePage("Wills in Custody") : linktoGo("Wills in Custody", getWill)}
 
               {provider ? (
                 <div

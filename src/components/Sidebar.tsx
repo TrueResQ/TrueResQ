@@ -25,6 +25,9 @@ const Sidebar = () => {
   function setWill() {
     navigate("/setwill");
   }
+  function getWill() {
+    navigate("/getwill");
+  }
 
   const location = useLocation();
   function linktoGo(label: string, path: any) {
@@ -80,6 +83,7 @@ const Sidebar = () => {
           {location.pathname === "/settings" ? activePage("Settings") : linktoGo("Settings", goToSettings)}
           {location.pathname === "/guardianRequests" ? activePage("Guardian Requests") : linktoGo("Guardian Requests", goToGuardianRequests)}
           {location.pathname === "/setwill" ? activePage("Set Your Will") : linktoGo("Set Your Will", setWill)}
+          {location.pathname === "/getwill" ? activePage("Wills in Custody") : linktoGo("Wills in Custody", getWill)}
         </nav>
       </div>
       {userProfile()}

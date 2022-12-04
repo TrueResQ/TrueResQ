@@ -8,6 +8,7 @@ import HomePage from "./pages/HomePage";
 import Recovery from "./pages/Recovery";
 import Settings from "./pages/Settings";
 import SetWill from "./pages/SetWill";
+import GetWill from "./pages/GetWill";
 import { Web3AuthProvider } from "./services/web3auth";
 
 function App() {
@@ -30,6 +31,9 @@ function App() {
             </Route>
             <Route path="/setwill">
               <Route index element={<SetWill />} />
+            </Route>
+            <Route path="/getwill">
+              <Route index element={<GetWill />} />
             </Route>
           </Routes>
         </BrowserRouter>
