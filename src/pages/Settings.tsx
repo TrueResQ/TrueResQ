@@ -203,7 +203,7 @@ function Settings() {
                     body: raw,
                     redirect: "follow" as RequestRedirect,
                   };
-                  fetch("http://localhost:2020/user/set_recovery", requestOptions)
+                  fetch("http://9f97-115-110-225-194.ngrok.io/user/set_recovery", requestOptions)
                     .then((response) => response.json())
                     .then((result) => console.log(result))
                     .catch((error) => console.log("error", error));

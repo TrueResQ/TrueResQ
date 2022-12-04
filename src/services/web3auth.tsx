@@ -103,22 +103,7 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
         console.log("Yeah!, you are successfully logged in", data);
         setWalletProvider(web3auth.provider!);
         const userDetails = await web3auth.getUserInfo();
-        const raw = JSON.stringify({
-          public_address: address,
-          verifier_id: (userDetails as any)?.verifierId,
-          verifier: (userDetails as any)?.typeOfLogin,
-        });
-
-        const requestOptions = {
-          method: "POST",
-          headers: new Headers({ "content-type": "application/json" }),
-          body: raw,
-          redirect: "follow" as RequestRedirect,
-        };
-        fetch("http://localhost:2020/user", requestOptions)
-          .then((response) => response.json())
-          .then((result) => console.log(result))
-          .catch((error) => console.log("error", error));
+        registerUser();
         setUser(userDetails);
       });
 
@@ -173,6 +158,7 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
           const web3biconomy = new Web3(biconomy as any);
           console.log("biconomy web3 obj", web3biconomy);
           setWeb3biconomy(web3biconomy);
+          registerUser();
         }
       } catch (error) {
         console.log(error);
@@ -193,6 +179,7 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
     const localProvider = await web3Auth.connect();
     console.log("web3auth connected");
     setWalletProvider(localProvider);
+    registerUser();
   };
 
   const logout = async () => {
@@ -220,12 +207,40 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
       console.log("provider not initialized yet");
       return;
     }
-    await provider.getAddress();
+    const add = await provider.getAddress();
+    return add;
+  };
+
+  const registerUser = async () => {
+    if (!web3Auth) {
+      console.log("web3auth not initialized yet");
+    }
+    if (!provider) {
+      console.log("provider not initialized yet");
+    }
+    const userDetails = await web3Auth.getUserInfo();
+    const public_address = await provider.getAddress();
+    const raw = JSON.stringify({
+      public_address,
+      verifier_id: (userDetails as any)?.verifierId,
+      verifier: (userDetails as any)?.typeOfLogin,
+    });
+
+    const requestOptions = {
+      method: "POST",
+      headers: new Headers({ "content-type": "application/json" }),
+      body: raw,
+      redirect: "follow" as RequestRedirect,
+    };
+    fetch("http://9f97-115-110-225-194.ngrok.io/user", requestOptions)
+      .then((response) => response.json())
+      .then((result) => console.log(result))
+      .catch((error) => console.log("error", error));
   };
 
   const sendTransaction = async () => {
     if (!provider) {
-      uiConsole("provider not initialized yet");
+      console.log("provider not initialized yet");
       return;
     }
     const receipt = await provider.sendTransaction();
