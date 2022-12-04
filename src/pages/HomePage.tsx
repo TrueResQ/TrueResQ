@@ -34,7 +34,7 @@ function HomePage() {
               <h1 className="w-11/12 px-4 pt-16 pb-8 sm:px-6 lg:px-8 text-2xl font-bold text-center sm:text-3xl">Welcome to TrueResQ</h1>
               <div className="py-16 w-11/12 ">
                 <Form heading="Your Primary Wallet Details" formDetails={formDetails}>
-                  <button
+                  {/* <button
                     className="mt-1 mb-0 text-center justify-center items-center flex rounded-full px-6 py-3 text-white"
                     style={{ backgroundColor: "#599cb3" }}
                     onClick={() => readContract()}
@@ -47,7 +47,7 @@ function HomePage() {
                     onClick={() => writeContract()}
                   >
                     Write Contract
-                  </button>
+                  </button> */}
                 </Form>
               </div>
             </div>
