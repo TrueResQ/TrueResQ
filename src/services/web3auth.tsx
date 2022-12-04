@@ -5,6 +5,7 @@ import { MetamaskAdapter } from "@web3auth/metamask-adapter";
 import { Web3Auth } from "@web3auth/modal";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import { createContext, ReactNode, useCallback, useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Web3 from "web3";
 
 import { getWalletProvider, IWalletProvider } from "./walletProvider";

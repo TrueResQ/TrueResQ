@@ -4,11 +4,12 @@ import type { Contract } from "web3-eth-contract";
 import { AbiItem } from "web3-utils";
 
 import { abi, byteCode } from "../contracts/walletAbi";
-class Wallet {
+import { setUserData } from "../utils/helpers";
+class WalletContract {
   private contract: Contract;
 
   // 5. Create deploy function
-  deploy = async (provider: SafeEventEmitterProvider) => {
+  deploy = async (provider: SafeEventEmitterProvider, walletAddress: string) => {
     const web3 = new Web3(provider as any);
 
     // 6. Create contract instance
@@ -38,24 +39,32 @@ class Wallet {
       })
       .then(function (newContractInstance) {
         console.log(newContractInstance.options.address); // instance with the new contract address
+        const data = {
+          address: newContractInstance.options.address,
+        };
+        setUserData(walletAddress, data);
         return newContractInstance;
       });
     return contractInstance;
   };
 
-  init = async (address: string, provider: SafeEventEmitterProvider) => {
+  init = async (provider: SafeEventEmitterProvider, walletAddress: string, address?: string) => {
     const web3 = new Web3(provider as any);
     if (address) {
       this.contract = new web3.eth.Contract(abi as AbiItem[], address);
     } else {
       // deploy smart contract
-      this.contract = await this.deploy(provider);
+      this.contract = await this.deploy(provider, walletAddress);
     }
   };
 
   getBalance = async (): Promise<string> => {
     const balanceInWei = this.contract.methods.getBalance().call();
     return Web3.utils.fromWei(balanceInWei, "ether");
+  };
+
+  getOwner = async (): Promise<string> => {
+    return this.contract.methods.owner().call();
   };
 
   getGuardians = async (): Promise<string[]> => {
@@ -89,4 +98,4 @@ class Wallet {
   };
 }
 
-export default Wallet;
+export default WalletContract;

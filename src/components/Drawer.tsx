@@ -78,6 +78,7 @@ const Drawer = ({ isOpen, setOpen }: DrawerProps) => {
                   onClick={() => {
                     setOpen(false);
                     logout();
+                    navigate("/");
                   }}
                   className="flex items-center px-4 py-2 mb-2 text-gray-300 rounded-lg hover:bg-background-secondary hover:text-primary  cursor-pointer"
                 >

@@ -3,11 +3,10 @@ type GuardianProps = {
     email: string;
     address: string;
     status: string;
-    requestId: string;
   }[];
 };
 
-const Table = (props: GuardianProps) => {
+const RecoveryRequestsTable = (props: GuardianProps) => {
   return (
     <div className="overflow-hidden overflow-x-auto rounded-lg border border-background">
       <table className="min-w-full divide-y divide-background text-sm">
@@ -87,4 +86,4 @@ const Table = (props: GuardianProps) => {
   );
 };
 
-export default Table;
+export default RecoveryRequestsTable;

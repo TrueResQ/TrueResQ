@@ -26,7 +26,7 @@ function GuardianRequests() {
 
   const checkRequestId = () => {
     const url = new URL(window.location.href);
-    const reqId = url.searchParams.get("requestId");
+    const reqId = url.searchParams.get("uuid");
     setRequestId(reqId);
   };
   useEffect(() => {
@@ -128,15 +128,6 @@ function GuardianRequests() {
                     onClick={() => {}}
                   >
                     Approve
-                  </button>
-                </div>
-                <div>
-                  <button
-                    className="mt-1 mb-0 text-center justify-center items-center flex rounded-full px-6 py-3 text-white"
-                    style={{ backgroundColor: "red", cursor: "pointer" }}
-                    onClick={() => {}}
-                  >
-                    Reject
                   </button>
                 </div>
               </div>

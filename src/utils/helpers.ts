@@ -57,3 +57,19 @@ export function queryToJson(url: string): Record<string, string> {
   });
   return jsonParams;
 }
+
+export const getUserData = (walletAddress: string): Record<string, string> => {
+  const userData = localStorage.getItem(walletAddress) || "{}";
+  const parsedData = JSON.parse(userData);
+  return parsedData;
+};
+
+export const setUserData = (walletAddress: string, _data: Record<string, string>) => {
+  const userData = localStorage.getItem(walletAddress) || "{}";
+  const parsedData = JSON.parse(userData);
+  const data = {
+    ...parsedData,
+    ..._data,
+  };
+  localStorage.setItem(walletAddress, JSON.stringify(data));
+};

@@ -17,6 +17,10 @@ const Sidebar = () => {
     navigate("/guardianRequests");
   }
 
+  function goToRecoveryRequests() {
+    navigate("/recoveryRequests");
+  }
+
   const location = useLocation();
   function linktoGo(label: string, path: any) {
     return (
@@ -67,6 +71,7 @@ const Sidebar = () => {
         <nav className="flex flex-col mt-6">
           {location.pathname === "/" ? activePage("Account Details") : linktoGo("Account Details", goToHome)}
           {location.pathname === "/settings" ? activePage("Settings") : linktoGo("Settings", goToSettings)}
+          {/* {location.pathname === "/recoveryRequests" ? activePage("Recovery Requests") : linktoGo("Recovery Requests", goToRecoveryRequests)} */}
           {location.pathname === "/guardianRequests" ? activePage("Guardian Requests") : linktoGo("Guardian Requests", goToGuardianRequests)}
         </nav>
       </div>
