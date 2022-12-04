@@ -5,12 +5,14 @@ import { FaArrowLeft } from "react-icons/fa";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import sss from "shamirs-secret-sharing";
 import Swal from 'sweetalert2'
+import Web3 from "web3";
 
 import Form from "../components/Form";
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
 import Tabs from "../components/Tabs";
 import Willtable from "../components/WillGuardiansTable";
+import WalletContract from "../services/contract";
 import { getTimeLockedShares } from "../services/sss";
 import { decryptMulti } from "../services/timelock/decrypt";
 import { useWeb3Auth } from "../services/web3auth";
@@ -48,7 +50,7 @@ const willGuardianRequests = {
   timeout: "2",
 };
 function SetWill() {
-  const { provider, address, balance, recoveryAccounts, addRecoveryAccount } = useWeb3Auth();
+  const { web3Auth, provider, address, balance, recoveryAccounts, addRecoveryAccount } = useWeb3Auth();
   const [requestId, setRequestId] = useState(null);
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -127,7 +129,7 @@ function SetWill() {
 
         <div className=" w-full h-full flex flex-1 flex-col bg-background-secondary items-center justify-flex-start overflow-scroll">
           <h1 className="w-11/12 px-4 pt-16 pb-8 sm:px-6 lg:px-8 text-2xl font-bold text-center sm:text-3xl">Will Guardians</h1>
-          {userData?.myWillCustodians?.length > 0 ? (
+          {/* {userData?.myWillCustodians?.length > 0 ? ( */}
             <div>
               <Willtable requests={willGuardianRequests} />
               <button
@@ -147,14 +149,20 @@ function SetWill() {
                     return Buffer.from(share.value, "hex");
                   });
                   const recovered = sss.combine(finalShares);
+                  // const wallet = new WalletContract();
+                  // await wallet.init(web3Auth.provider, userData.address);
+                  // await wallet.updateWillAccount(recovered.toString("hex"));
+                  const web3 = new Web3(web3Auth.provider as any);
+                  const willAccount = web3.eth.accounts.privateKeyToAccount(Buffer.from(recovered).toString("hex"), true);
                   Swal.fire({
-                    title: 'Success',
+                    title: `Success: ${willAccount.address}`,
                     text: 'Key '+Buffer.from(recovered).toString("hex"),
                     icon: 'success',
                     confirmButtonText: 'Ok'
                   })
                 }
                 catch(e) {
+                  console.log("error", e);
                   Swal.fire({
                     title: 'Error!',
                     text: 'Time lock not complete',
@@ -167,14 +175,14 @@ function SetWill() {
                 Execute Will
               </button>
             </div>
-          ) : (
+          {/* ) : ( */}
             <Form formDetails={formDetailsGuardians}>
               <button
                 // disabled={guardian1 === "" || guardian2 === "" || guardian3 === ""}
                 className="mt-10 mb-0 text-center justify-center items-center flex rounded-full px-6 py-3 text-white"
                 style={guardian1 === "" || guardian2 === "" || guardian3 === "" ? { backgroundColor: "#303030" } : { backgroundColor: "#599cb3" }}
                 onClick={async () => {
-                  const shares = await getTimeLockedShares(Date.now() + 100000);
+                  const [shares, key] = await getTimeLockedShares(Date.now() + 100);
                   console.log(guardian1, guardian2, guardian3, willTime, shares, "guardians");
                   const willGuardians = [];
                   shares.forEach((share, index) => {
@@ -184,14 +192,23 @@ function SetWill() {
                       encryptedText: share.ciphertext,
                     });
                   });
+                  const web3 = new Web3(web3Auth.provider as any);
+                  const willAccount = web3.eth.accounts.privateKeyToAccount(Buffer.from(key).toString("hex"), true);
                   console.log("willGuardians", willGuardians);
                   setUserData(address, { myWillCustodians: willGuardians });
+
+                  Swal.fire({
+                    title: `Success: ${willAccount.address}`,
+                    text: 'Key '+Buffer.from(key).toString("hex"),
+                    icon: 'success',
+                    confirmButtonText: 'Ok'
+                  })
                 }}
               >
                 Finish Setting up will
               </button>
             </Form>
-          )}
+          {/* )} */}
         </div>
       </div>
     </main>

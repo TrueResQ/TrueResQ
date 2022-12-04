@@ -7,7 +7,7 @@ const getPrivateKey = () => {
   return generatePrivate();
 };
 
-const getTimeLockedShares = (decryptionTime: number) => {
+const getTimeLockedShares = async (decryptionTime: number) => {
   const privateKey = getPrivateKey();
   console.log("originla", Buffer.from(privateKey).toString("hex"));
   const shares = sss.split(privateKey, { shares: 3, threshold: 2 });
@@ -18,7 +18,8 @@ const getTimeLockedShares = (decryptionTime: number) => {
     const encShare = encryptedOrDecryptedFormData({ plainText: share.toString("hex"), decryptionTime });
     return encShare;
   });
-  return Promise.all(encryptedShares);
+  const allShares = await Promise.all(encryptedShares);
+  return [allShares,recovered]
 };
 
 export { getTimeLockedShares };
