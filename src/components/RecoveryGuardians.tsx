@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+
 function RecoveryGuardians() {
   return (
     <div className="w-full h-full flex flex-1 flex-col bg-background-secondary items-center justify-flex-start">
@@ -17,8 +19,7 @@ function RecoveryGuardians() {
       <button
         className="mt-1 mb-0 text-center justify-center items-center flex rounded-full px-6 py-3 text-white"
         style={{ backgroundColor: "#f6851b" }}
-        onClick={() => {}}
-      >
+        onClick={() => {}}>
         Inform Guardians
       </button>
     </div>

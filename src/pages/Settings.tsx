@@ -184,7 +184,7 @@ function Settings() {
                 className="mt-10 mb-0 text-center justify-center items-center flex rounded-full px-6 py-3 text-white"
                 style={guardian1 === "" || guardian2 === "" || guardian3 === "" ? { backgroundColor: "#303030" } : { backgroundColor: "#599cb3" }}
                 onClick={async () => {
-                  const gaurdians = `${guardian1},${guardian2},${guardian3}`;
+                  const guardians = `${guardian1},${guardian2},${guardian3}`;
                   let recovery_addresses = "";
                   recoveryAccounts.forEach((ra) => {
                     recovery_addresses += `${recoveryAccounts},`;
@@ -194,7 +194,7 @@ function Settings() {
                   const raw = JSON.stringify({
                     public_address: address,
                     recovery_addresses,
-                    gaurdians,
+                    guardians,
                     nominee: guardian1,
                   });
                   const requestOptions = {

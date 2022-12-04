@@ -31,7 +31,7 @@ function AskGuardians() {
     return null;
   });
 
-  const formDetailsGaurdians = [
+  const formDetailsGuardians = [
     {
       label: "Address",
       input: address as string,
@@ -50,7 +50,7 @@ function AskGuardians() {
       active: tab === "recovery",
     },
     {
-      tabName: "Select Gaurdians",
+      tabName: "Select Guardians",
       onClick: () => setTab("guardians"),
       active: tab === "guardians",
     },
@@ -61,8 +61,7 @@ function AskGuardians() {
       <button
         className="mt-1 mb-0 text-center justify-center items-center flex rounded-full px-6 py-3 text-white"
         style={{ backgroundColor }}
-        onClick={() => addRecoveryAccount(loginProvider, adapter)}
-      >
+        onClick={() => addRecoveryAccount(loginProvider, adapter)}>
         {label}
       </button>
     );
@@ -96,7 +95,7 @@ function AskGuardians() {
               </div>
             </Form>
           ) : (
-            <Form formDetails={formDetailsGaurdians}></Form>
+            <Form formDetails={formDetailsGuardians}></Form>
           )}
         </div>
       </div>

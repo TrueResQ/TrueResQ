@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 // @ts-ignore
 import starkwareCrypto from "@starkware-industries/starkware-crypto-utils";
 import { useEffect, useState } from "react";
@@ -56,7 +57,7 @@ function GuardianRequests() {
     return null;
   });
 
-  const formDetailsGaurdians = [
+  const formDetailsGuardians = [
     {
       label: "Address",
       input: address as string,
@@ -75,7 +76,7 @@ function GuardianRequests() {
       active: tab === "recovery",
     },
     {
-      tabName: "Select Gaurdians",
+      tabName: "Select Guardians",
       onClick: () => setTab("guardians"),
       active: tab === "guardians",
     },
@@ -86,8 +87,7 @@ function GuardianRequests() {
       <button
         className="mt-1 mb-0 text-center justify-center items-center flex rounded-full px-6 py-3 text-white"
         style={{ backgroundColor }}
-        onClick={() => addRecoveryAccount(loginProvider, adapter)}
-      >
+        onClick={() => addRecoveryAccount(loginProvider, adapter)}>
         {label}
       </button>
     );
@@ -114,8 +114,7 @@ function GuardianRequests() {
                 style={{ marginRight: "auto", marginLeft: "20px", cursor: "pointer" }}
                 onClick={() => {
                   navigate("");
-                }}
-              >
+                }}>
                 <FaArrowLeft />
               </div>
               <div>You are invited to be the guardian of himanshu</div>
@@ -124,9 +123,16 @@ function GuardianRequests() {
                   <button
                     className="mt-1 mb-0 mr-10 text-center justify-center items-center flex rounded-full px-6 py-3 text-white"
                     style={{ backgroundColor: "green", cursor: "pointer" }}
-                    onClick={() => {}}
-                  >
+                    onClick={() => {}}>
                     Approve
+                  </button>
+                </div>
+                <div>
+                  <button
+                    className="mt-1 mb-0 text-center justify-center items-center flex rounded-full px-6 py-3 text-white"
+                    style={{ backgroundColor: "red", cursor: "pointer" }}
+                    onClick={() => {}}>
+                    Reject
                   </button>
                 </div>
               </div>

@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 // @ts-ignore
 import starkwareCrypto from "@starkware-industries/starkware-crypto-utils";
 import { SocketAddress } from "net";

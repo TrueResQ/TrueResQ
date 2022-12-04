@@ -103,12 +103,12 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
         console.log("Yeah!, you are successfully logged in", data);
         setWalletProvider(web3auth.provider!);
         const userDetails = await web3auth.getUserInfo();
-        setUser(userDetails);
         const raw = JSON.stringify({
           public_address: address,
           verifier_id: (userDetails as any)?.verifierId,
           verifier: (userDetails as any)?.typeOfLogin,
         });
+
         const requestOptions = {
           method: "POST",
           headers: new Headers({ "content-type": "application/json" }),
@@ -119,6 +119,7 @@ export const Web3AuthProvider = ({ children }: IWeb3AuthProps) => {
           .then((response) => response.json())
           .then((result) => console.log(result))
           .catch((error) => console.log("error", error));
+        setUser(userDetails);
       });
 
       web3auth.on(ADAPTER_EVENTS.CONNECTING, () => {
